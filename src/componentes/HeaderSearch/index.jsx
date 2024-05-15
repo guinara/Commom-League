@@ -13,7 +13,7 @@ const HeaderSearchEstilizado = styled.input`
     padding: 12px 16px;
     border-radius: 10px;
     border: 2px solid;
-    border-color: #C98CF1;
+    border-color: #0084ff;
     background: transparent;
     box-sizing: border-box;
     width: 566;
