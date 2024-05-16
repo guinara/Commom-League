@@ -32,9 +32,38 @@ return(
 
 >
 
-        mais vistas
+        Campeonatos
 </ItemNavegacao>
 
+<ItemNavegacao
+        iconeAtivo="/icones/mais-vistas-ativo.png"
+        iconeInativo="/icones/mais-vistas-inativo.png"
+
+
+>
+
+        Ranking
+</ItemNavegacao>
+
+<ItemNavegacao
+        iconeAtivo="/icones/mais-vistas-ativo.png"
+        iconeInativo="/icones/mais-vistas-inativo.png"
+
+
+>
+
+        Notificações
+</ItemNavegacao>
+
+<ItemNavegacao
+        iconeAtivo="/icones/mais-vistas-ativo.png"
+        iconeInativo="/icones/mais-vistas-inativo.png"
+
+
+>
+
+        Mensagens
+</ItemNavegacao>
 
 
 </ListaEstilizada>

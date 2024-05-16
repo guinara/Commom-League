@@ -1,0 +1,22 @@
+[
+    {
+        "id": 0,
+        "titulo": "League of Legends"
+    },
+    {
+        "id": 1,
+        "titulo": "Valorant"
+    },
+    {
+        "id": 2,
+        "titulo": "Overwatch"
+    },
+    {
+        "id": 3,
+        "titulo": "Dota 2"
+    },
+    {
+        "id": 4,
+        "titulo": "Smite"
+    }
+]
