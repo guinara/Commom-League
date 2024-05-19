@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 import * as Yup from 'yup';
 import http from '../../http';
 import { useNavigate } from 'react-router-dom';
-import InputMask from 'react-input-mask';
+import MaskedInput from 'react-text-mask';
 
 const StyledForm = styled(FormikForm)`
     max-width: 400px;
@@ -58,23 +58,36 @@ const StyledForm = styled(FormikForm)`
     }
 
     .logo {
-        width: 150px;
-        margin-bottom: 20px;
+        width: 150px; /* Tamanho da logo */
+        margin-bottom: 20px; /* Espaço entre a logo e o formulário */
+        margin-right: 2%;
     }
 `;
 
 const validationSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Email is required'),
-    fullName: Yup.string().required('Full name is required'),
+    login: Yup.string().email('Email inválido').required('Email é obrigatório'),
+    fullName: Yup.string().required('Nome completo é obrigatório'),
     cpf: Yup.string()
-        .matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, 'Invalid CPF')
-        .required('CPF is required'),
-    telefones: Yup.string()
-        .matches(/^\(\d{2}\) \d{5}-\d{4}$/, 'Invalid phone number')
-        .required('Phone number is required'),
-    password: Yup.string().required('Password is required'),
-    confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
-    birthDate: Yup.date().required('Birth date is required'),
+        .matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, 'CPF inválido')
+        .required('CPF é obrigatório'),
+    telefone: Yup.string()
+        .matches(/^\(\d{2}\) \d{5}-\d{4}$/, 'Telefone inválido')
+        .required('Telefone é obrigatório'),
+    password: Yup.string().required('Senha é obrigatória'),
+    confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'As senhas devem coincidir'),
+    birthDate: Yup.date()
+        .max(new Date(), 'Data de nascimento não pode ser maior que a data atual')
+        .test('is-adult', 'Você deve ter mais de 16 anos', function(value) {
+            const birthDate = new Date(value);
+            const today = new Date();
+            const age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                return age - 1 >= 16;
+            }
+            return age >= 16;
+        })
+        .required('Data de nascimento é obrigatória'),
 });
 
 const ErrorMessageStyled = styled.div`
@@ -88,22 +101,19 @@ const Form = () => {
     return (
         <Formik
             initialValues={{
-                email: '',
+                login: '',
                 fullName: '',
                 cpf: '',
-                telefones: '',
+                telefone: '',
                 password: '',
-                confirmPassword: '',
                 birthDate: '',
             }}
             validationSchema={validationSchema}
             onSubmit={(values, actions) => {
                 console.log(values);
-                // Remove o campo 'confirmPassword' antes de enviar
-                const { confirmPassword, ...data } = values;
-                http.post('auth/register', data, {})
+           
+                http.post('auth/register', values, {})
                     .then(response => {
-                        sessionStorage.setItem('token', response.data.token);
                         console.log(response.data);
                         actions.resetForm();
                         navigate('/');
@@ -115,43 +125,45 @@ const Form = () => {
         >
             {({ errors, touched }) => (
                 <StyledForm>
-                    <label htmlFor="email">Email:</label>
-                    <Field type="text" id="email" name="email" />
-                    <ErrorMessageStyled>{errors.email && touched.email && errors.email}</ErrorMessageStyled>
+                    <img className="logo" src="/imagens/Logo.png" alt="Logo do seu site" />
 
-                    <label htmlFor="fullName">Full Name:</label>
+                    <label htmlFor="login">Email:</label>
+                    <Field type="text" id="login" name="login" />
+                    <ErrorMessageStyled>{errors.login && touched.login && errors.login}</ErrorMessageStyled>
+
+                    <label htmlFor="fullName">Nome Completo:</label>
                     <Field type="text" id="fullName" name="fullName" />
                     <ErrorMessageStyled>{errors.fullName && touched.fullName && errors.fullName}</ErrorMessageStyled>
 
                     <label htmlFor="cpf">CPF:</label>
                     <Field
-                        as={InputMask}
-                        mask="999.999.999-99"
+                        as={MaskedInput}
+                        mask={[/\d/,/\d/,/\d/,'.',/\d/,/\d/,/\d/,'.',/\d/,/\d/,/\d/,'-',/\d/,/\d/]}
                         type="text"
                         id="cpf"
                         name="cpf"
                     />
                     <ErrorMessageStyled>{errors.cpf && touched.cpf && errors.cpf}</ErrorMessageStyled>
 
-                    <label htmlFor="telefones">Phone Number:</label>
+                    <label htmlFor="telefone">Telefone:</label>
                     <Field
-                        as={InputMask}
-                        mask="(99) 99999-9999"
+                        as={MaskedInput}
+                        mask={['(',/\d/,/\d/,')',' ',/\d/,/\d/,/\d/,/\d/,/\d/,'-',/\d/,/\d/,/\d/,/\d/]}
                         type="text"
-                        id="telefones"
-                        name="telefones"
+                        id="telefone"
+                        name="telefone"
                     />
-                    <ErrorMessageStyled>{errors.telefones && touched.telefones && errors.telefones}</ErrorMessageStyled>
+                    <ErrorMessageStyled>{errors.telefone && touched.telefone && errors.telefone}</ErrorMessageStyled>
 
-                    <label htmlFor="password">Password:</label>
+                    <label htmlFor="password">Senha:</label>
                     <Field type="password" id="password" name="password" />
                     <ErrorMessageStyled>{errors.password && touched.password && errors.password}</ErrorMessageStyled>
 
-                    <label htmlFor="confirmPassword">Confirm Password:</label>
+                    <label htmlFor="confirmPassword">Confirme a Senha:</label>
                     <Field type="password" id="confirmPassword" name="confirmPassword" />
                     <ErrorMessageStyled>{errors.confirmPassword && touched.confirmPassword && errors.confirmPassword}</ErrorMessageStyled>
 
-                    <label htmlFor="birthDate">Birth Date:</label>
+                    <label htmlFor="birthDate">Data de Nascimento:</label>
                     <Field type="date" id="birthDate" name="birthDate" />
                     <ErrorMessageStyled>{errors.birthDate && touched.birthDate && errors.birthDate}</ErrorMessageStyled>
 

@@ -47,26 +47,6 @@
     "path": "/imagens/galeria/foto-7.png",
     "id": "7",
     "tagId": 2
-  },
-  {
-    "titulo": "Ilustração",
-    "fonte": "Alura Space",
-    "path": "/imagens/galeria/foto-8.png",
-    "id": "8",
-    "tagId": 4
-  },
-  {
-    "titulo": "Céu estrelado",
-    "fonte": "Alura Space",
-    "path": "/imagens/galeria/foto-9.png",
-    "id": "9",
-    "tagId": 1
-  },
-  {
-    "titulo": "Ilustração",
-    "fonte": "Alura Space",
-    "path": "/imagens/galeria/foto-10.png",
-    "id": "10",
-    "tagId": 1
   }
+ 
 ]
