@@ -1,48 +1,48 @@
 [
   {
-    "titulo": "Grande Nuvem de Magalhães",
-    "fonte": "Alura Space",
+    "titulo": "Torneio Lol",
+    "fonte": "5x5 Classic",
     "path": "/imagens/galeria/foto-1.png",
     "id": "1",
     "tagId": 2
   },
   {
-    "titulo": "Via Láctea",
-    "fonte": "Alura Space",
+    "titulo": "Torneio Overwatch",
+    "fonte": "5x5 Classic",
     "path": "/imagens/galeria/foto-2.png",
     "id": "2",
     "tagId": 2
   },
   {
-    "titulo": "Lua: quarto minguante",
-    "fonte": "Alura Space",
+    "titulo": "Torneio Valorant",
+    "fonte": "5x5 Classic",
     "path": "/imagens/galeria/foto-3.png",
     "id": "3",
     "tagId": 3
   },
   {
-    "titulo": "Galáxia de Andrómeda",
-    "fonte": "Alura Space",
+    "titulo": "Dota 2",
+    "fonte": "5x5 Classic",
     "path": "/imagens/galeria/foto-4.png",
     "id": "4",
     "tagId": 2
   },
   {
-    "titulo": "Estrela Pistola",
-    "fonte": "Alura Space",
+    "titulo": "Smite",
+    "fonte": "1x1 Solo",
     "path": "/imagens/galeria/foto-5.png",
     "id": "5",
     "tagId": 1
   },
   {
-    "titulo": "Ilustração",
+    "titulo": "Smite",
     "fonte": "Alura Space",
     "path": "/imagens/galeria/foto-6.png",
     "id": "6",
     "tagId": 4
   },
   {
-    "titulo": "Galáxia de Andrómeda",
+    "titulo": "Dota 2",
     "fonte": "Alura Space",
     "path": "/imagens/galeria/foto-7.png",
     "id": "7",
