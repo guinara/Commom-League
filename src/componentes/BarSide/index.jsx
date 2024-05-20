@@ -60,9 +60,9 @@ const BarSide = () => {
                     <ItemNavegacao
                         iconeAtivo="/icones/mais-vistas-ativo.png"
                         iconeInativo="/icones/mais-vistas-inativo.png"
-                        onClick={() => navigate('/times')}
+                        onClick={() => navigate('/mp')}
                     >
-                        Times
+                        Mercado Pago
                     </ItemNavegacao>
                     <ItemNavegacao
                         iconeAtivo="/icones/mais-vistas-ativo.png"

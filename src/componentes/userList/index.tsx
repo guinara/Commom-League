@@ -36,7 +36,7 @@ const UserList: React.FC = () => {
       {data.map((userData, index) => (
         <UserItem key={index}>
           <p><strong>ID:</strong> {userData.id}</p>
-          <p><strong>Login:</strong> {userData.Login}</p>
+          <p><strong>Login:</strong> {userData.login}</p>
           <p><strong>Senha:</strong> {userData.password}</p>
           <p><strong>Nome:</strong> {userData.fullName}</p>
           <p><strong>cpf:</strong> {userData.cpf}</p>

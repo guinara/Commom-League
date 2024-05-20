@@ -30,7 +30,7 @@ const StyledButton = styled.button`
   border-radius: 4px;
   cursor: pointer;
   margin: 8px auto;
-  background-color: #ff2600;
+  background-color: #00c050;
 `;
 
 const StyledInput = styled(Field)`
@@ -79,7 +79,7 @@ const FormModal = () => {
 
   return (
     <>
-      <StyledButton onClick={openModal}>Buscar Contas ApiRiot</StyledButton>
+      <StyledButton onClick={openModal}>Colocar Saldo</StyledButton>
       <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>
         <div>
           <Formik
@@ -90,10 +90,10 @@ const FormModal = () => {
           >
             {({ errors, touched }) => (
               <FormikForm>
-                <StyledLabel htmlFor="unit_price">Tag Line:</StyledLabel>
+                <StyledLabel htmlFor="unit_price">Insira o Valor :</StyledLabel>
                 <StyledInput type="number" id="tagLine" name="unit_price" />
                 <ErrorMessage name="unit_price" component="div" className="error-message" />
-                <StyledButton type="submit">Buscar</StyledButton>
+                <StyledButton type="submit">Comprar</StyledButton>
               </FormikForm>
             )}
           </Formik>

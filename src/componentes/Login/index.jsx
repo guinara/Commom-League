@@ -4,6 +4,7 @@ import { styled } from 'styled-components';
 import http from '../../http';
 import { useNavigate } from 'react-router-dom';
 
+
 const StyledForm = styled(FormikForm)`
     max-width: 400px;
     margin: auto;
@@ -79,6 +80,7 @@ const Form = () => {
                 console.log(values);
                 http.post('auth/login', values, {})
                     .then(response => {
+                        sessionStorage.removeItem('token');
                         sessionStorage.setItem('token', response.data.token);
                         console.log(response.data);
                         actions.resetForm();

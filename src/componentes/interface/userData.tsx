@@ -1,6 +1,6 @@
 export interface UserData {
     id: string;
-    Login: string;
+    login: string;
     password: string;
     fullName: string;
     cpf: string;
