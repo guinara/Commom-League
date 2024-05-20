@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const http = axios.create({
-    baseURL: 'http://localhost:8080/',
+    baseURL: 'ec2-18-230-65-128.sa-east-1.compute.amazonaws.com:7070/',
     headers: {
         Accept: 'application/json',
     }
@@ -22,7 +22,7 @@ http.interceptors.response.use(function (response) {
 }, function (error) {
     if (error.response && error.response.status === 403) {
         // Remove o token do cache
-      //  sessionStorage.removeItem('token');
+       // sessionStorage.removeItem('token');
     }
     return Promise.reject(error);
 });
