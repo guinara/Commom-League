@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { styled } from "styled-components";
 import ItemNavegacao from "./ItemNavegacao";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,12 @@ const ListaEstilizada = styled.ul`
 `;
 
 const BarSide = () => {
+
+    const token = sessionStorage.getItem('token');
+    const [usuarioEstaLogado, setUsuarioLogado] = useState(token != null);
+
+    console.log(usuarioEstaLogado);
+
     const navigate = useNavigate(); // Hook useNavigate para navegação
 
     const efetuarLogout = () => {
@@ -33,26 +39,30 @@ const BarSide = () => {
                     <ItemNavegacao
                         iconeAtivo="/icones/mais-vistas-ativo.png"
                         iconeInativo="/icones/mais-vistas-inativo.png"
+                        onClick={() => navigate('/riot')}
                     >
-                        Campeonatos
+                        Riot
                     </ItemNavegacao>
                     <ItemNavegacao
                         iconeAtivo="/icones/mais-vistas-ativo.png"
                         iconeInativo="/icones/mais-vistas-inativo.png"
+                        onClick={() => navigate('/adm')}
                     >
-                        Ranking
+                        ApiKey
                     </ItemNavegacao>
                     <ItemNavegacao
                         iconeAtivo="/icones/mais-vistas-ativo.png"
                         iconeInativo="/icones/mais-vistas-inativo.png"
+                        onClick={() => navigate('/perfil')}
                     >
-                        Notificações
+                        Perfil
                     </ItemNavegacao>
                     <ItemNavegacao
                         iconeAtivo="/icones/mais-vistas-ativo.png"
                         iconeInativo="/icones/mais-vistas-inativo.png"
+                        onClick={() => navigate('/times')}
                     >
-                        Mensagens
+                        Times
                     </ItemNavegacao>
                     <ItemNavegacao
                         iconeAtivo="/icones/mais-vistas-ativo.png"

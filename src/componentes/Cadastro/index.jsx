@@ -105,6 +105,7 @@ const Form = () => {
                 fullName: '',
                 cpf: '',
                 telefone: '',
+                confirmPassword:"",
                 password: '',
                 birthDate: '',
             }}
@@ -116,7 +117,7 @@ const Form = () => {
                     .then(response => {
                         console.log(response.data);
                         actions.resetForm();
-                        navigate('/');
+                        navigate('/login');
                     })
                     .catch(error => {
                         console.error('Error:', error);

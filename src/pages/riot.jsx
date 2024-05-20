@@ -2,6 +2,7 @@
 import { styled } from "styled-components"
 import EstilosGlobais from "../componentes/GlobaStyle";
 import Register from "../componentes/register copy";
+import AccountList from "../componentes/accountRiotList";
 
 const Backgroundgradient = styled.div`
 background: linear-gradient(174.61deg, #141d26 4.16%, #1a2633 48%, #151515 96.76%);
@@ -17,6 +18,7 @@ const App = () => {
     <Backgroundgradient>
       <EstilosGlobais />
       <Register />
+      <AccountList />
     </Backgroundgradient>
   )
 }

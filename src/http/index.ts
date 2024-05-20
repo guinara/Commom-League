@@ -22,7 +22,7 @@ http.interceptors.response.use(function (response) {
 }, function (error) {
     if (error.response && error.response.status === 403) {
         // Remove o token do cache
-        sessionStorage.removeItem('token');
+       // sessionStorage.removeItem('token');
     }
     return Promise.reject(error);
 });
