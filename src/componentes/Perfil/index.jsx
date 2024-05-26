@@ -1,44 +1,41 @@
 import React, { useState } from 'react';
-import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
 import http from '../../http';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
 import styled from 'styled-components';
 
-// Define o estilo do modal
 const customStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)',
-    backgroundColor       : '#f7f7f7',
-    border                : 'none',
-    borderRadius          : '8px',
-    padding               : '20px',
-    maxWidth              : '400px',
-    textAlign             : 'center',
-    boxShadow             : '0px 4px 10px rgba(0, 0, 0, 0.1)',
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: '#f7f7f7',
+    border: 'none',
+    borderRadius: '8px',
+    padding: '20px',
+    maxWidth: '400px',
+    textAlign: 'center',
+    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
   }
 };
 
-
-// Estilizando o botão
 const StyledButton = styled.button`
   width: 100%;
   padding: 10px;
   color: white;
   border: none;
   border-radius: 4px;
-  cursor: pointer;
+  cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
   margin: 8px auto;
-  background-color: #ff2600; /* Cor do botão */
+  background-color: ${props => props.disabled ? 'gray' : 'red'};
 `;
 
-// Estilizando o input
-const StyledInput = styled(Field)`
+
+
+const StyledInput = styled.input`
   width: 95%;
   padding: 8px;
   margin-bottom: 16px;
@@ -46,11 +43,10 @@ const StyledInput = styled(Field)`
   border-radius: 4px;
 `;
 
-// Estilizando o label
 const StyledLabel = styled.label`
   display: block;
   margin-bottom: 10px;
-  color: #00000089; /* Cor do texto do label */
+  color: #00000089;
   text-align: left;
   width: 100%;
 `;
@@ -58,8 +54,11 @@ const StyledLabel = styled.label`
 const FormModal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [userData, setUserData] = useState({});
+  const [tagLine, setTagLine] = useState('');
+  const [gameName, setGameName] = useState('');
+  const [idPlayer, setIdPlayer] = useState('');
+  const [idTime, setIdTime] = useState('');
   const navigate = useNavigate();
-  
 
   const openModal = () => {
     setIsOpen(true);
@@ -69,34 +68,42 @@ const FormModal = () => {
     setIsOpen(false);
   };
 
-  const handleSearch = (values, actions) => {
+  const handleSearch = () => {
+    const values = { tagLine, gameName };
     http.post('api/v1/accountsRiot/post', values, {})
       .then(response => {
-        console.log(response.data);
         setUserData(response.data);
         console.log('Dados da requisição:', values);
-        actions.setFieldValue('idTime', response.data.id); // Preenche o campo de ID
-    
+        console.log(response.data.id);
+      //  localStorage.setItem('accountRiot', response.data.id);
+        setIdTime(response.data.id); // Preenche o campo de ID
+        setIdPlayer(localStorage.getItem('userId'));
+       
       })
       .catch(error => {
         console.error('Error:', error);
       });
   };
 
-  const handleSubmit = (values, actions) => {
+  const handleSubmit = () => {
+    const values = { idPlayer, idTime };
     http.post('/api/v1/accountsRiot/addAccountRiot', values, {})
       .then(response => {
-        
-        console.log(response.data);
         setUserData(response.data);
         console.log('Dados da requisição:', values);
-        actions.setFieldValue('idTime', response.data.id);
-  //      closeModal();
+        setIdTime(response.data);
+        setTagLine(''); // Limpa o campo Tag Line
+        setGameName(''); // Limpa o campo Game Name
+        setIdPlayer(''); // Limpa o campo ID Player
+        setIdTime(''); // Limpa o campo ID Time
+        closeModal();
       })
       .catch(error => {
-        console.log(userData.id)
+        setIdTime('');
+        console.log("userdata", userData.id);
+        console.log('soregeDta:', localStorage.getItem('accountRiot'));
         console.log('Dados da requisição:', values);
-        console.error('Error:', error);
+        console.error('Conta ja vinculada', error);
       });
   };
 
@@ -105,50 +112,27 @@ const FormModal = () => {
       <StyledButton onClick={openModal}>Associar conta Riot</StyledButton>
       <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>
         <div>
-          <Formik
-            initialValues={{
-              tagLine: '',
-              gameName: '',
-            }}
-            onSubmit={handleSearch}
-          >
-            {({ errors, touched }) => (
-              <FormikForm>
-                <StyledLabel htmlFor="tagLine">Tag Line:</StyledLabel>
-                <StyledInput type="text" id="tagLine" name="tagLine" />
-                <ErrorMessage name="tagLine" component="div" className="error-message" />
+          <StyledLabel htmlFor="tagLine">Tag Line:</StyledLabel>
+          <StyledInput 
+          type="text" 
+          id="tagLine" 
+          value={tagLine} onChange={(e) => setTagLine(e.target.value)} />
+          
+          <StyledLabel htmlFor="gameName">Game Name:</StyledLabel>
+          <StyledInput type="text" id="gameName" value={gameName} onChange={(e) => setGameName(e.target.value)} />
+          
+          <StyledButton onClick={handleSearch}>Buscar</StyledButton>
 
-                <StyledLabel htmlFor="gameName">Game Name:</StyledLabel>
-                <StyledInput type="text" id="gameName" name="gameName" />
-                <ErrorMessage name="gameName" component="div" className="error-message" />
+          <StyledLabel htmlFor="idTime"></StyledLabel>
+          <StyledInput type="hidden" id="idTime" value={idTime} onChange={(e) => setIdTime(e.target.value)} />
+          
+          <StyledLabel htmlFor="idPlayer"></StyledLabel>
+          <StyledInput type="hidden" id="idPlayer" value={idPlayer} onChange={(e) => setIdPlayer(e.target.value)} />
+          
 
-                <StyledButton type="submit">Buscar</StyledButton>
-              </FormikForm>
-            )}
-          </Formik>
-
-          <Formik
-            initialValues={{
-                idPlayer: '', // Novo campo para preenchimento
-                idTime: 'b84ebd84-ba8e-427f-9b87-57b706f8e759',
-            }}
-            onSubmit={handleSubmit}
-          >
-            {({ errors, touched }) => (
-              <FormikForm>
-                <StyledLabel htmlFor="idTime">ID AccountRiot:</StyledLabel>
-                <StyledInput type="text" id="idTime" name="idTime" value={userData.id || ''} />
-                
-                <StyledLabel htmlFor="idPlayer">ID Usuario:</StyledLabel>
-                <StyledInput type="text" id="idPlayer" name="idPlayer" />
-
-
-                <ErrorMessage name="idPlayer" component="div" className="error-message" />
-
-                <StyledButton type="submit">Associar</StyledButton>
-              </FormikForm>
-            )}
-          </Formik>
+        <StyledButton 
+          onClick={handleSubmit}
+          disabled={!idTime || !idPlayer}>Associar</StyledButton>
         </div>
       </Modal>
     </>

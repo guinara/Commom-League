@@ -22,6 +22,7 @@ const BarSide = () => {
     const efetuarLogout = () => {
         console.log("Logout clicado"); // Verifica se a função está sendo chamada
         sessionStorage.removeItem('token');
+        localStorage.removeItem('login')
         navigate('/login');
     };
 

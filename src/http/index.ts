@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const http = axios.create({
-    baseURL: 'https://ec2-15-228-202-112.sa-east-1.compute.amazonaws.com:8080/',
+    baseURL: 'http://localhost:8080/',
     headers: {
         Accept: 'application/json',
       

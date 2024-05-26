@@ -7,6 +7,7 @@ import Cadastro from './pages/cadastro'
 import Perfil from './pages/perfil'
 import Adm from './pages/adm'
 import Mp from './pages/mercadoPago'
+import Teams from './pages/team'
 
  
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/Adm" element={<Adm/>} />
           <Route path="/mp" element={<Mp/>} />
+          <Route path="/teams" element={< Teams/>} />
       </Routes>
     </BrowserRouter>
    

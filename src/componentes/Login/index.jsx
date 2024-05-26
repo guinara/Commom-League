@@ -82,6 +82,7 @@ const Form = () => {
                     .then(response => {
                         sessionStorage.removeItem('token');
                         sessionStorage.setItem('token', response.data.token);
+                        localStorage.setItem('login', values.login);
                         console.log(response.data);
                         actions.resetForm();
                         navigate('/');
