@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
-import styled from 'styled-components';
-import * as Yup from 'yup';
+import { styled } from 'styled-components';
 import http from '../../http';
 import { useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
 
 const StyledForm = styled(FormikForm)`
     max-width: 400px;
@@ -25,7 +25,7 @@ const StyledForm = styled(FormikForm)`
         width: 100%;
     }
 
-    input {
+    input, select {
         width: 95%;
         padding: 8px;
         margin-bottom: 16px;
@@ -63,80 +63,76 @@ const StyledForm = styled(FormikForm)`
     }
 `;
 
-const validationSchema = Yup.object().shape({
-    name: Yup.string().required('Nome do time é obrigatório'),
-    game: Yup.string().oneOf(['League of Legends', 'Overwatch', 'Paladins'], 'Jogo inválido').test({
-        name: 'is-lol',
-        message: 'O jogo deve ser League of Legends',
-        test: (value) => value === 'League of Legends',
-    }).required('Jogo é obrigatório'),
-});
-
-const ErrorMessageStyled = styled.div`
-    color: red;
-    font-size: 12px;
-`;
-
 const Form = () => {
     const navigate = useNavigate();
-    const [userData, setUserData] = useState(null);
 
-    useEffect(() => {
-        http.get('auth/' + localStorage.getItem('login'))
-            .then(response => {
-                setUserData(response.data); 
-                localStorage.setItem('userId', response.data.id);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    }, []); // Adiciona uma dependência vazia para garantir que o efeito só seja executado uma vez
-
-    const handleIdUserChange = (e) => {
-        // Lógica para manipular a mudança de valor do campo idUser, se necessário
-    };
+    const validationSchema = Yup.object().shape({
+        teamName: Yup.string().required('Nome do time é obrigatório'),
+        game: Yup.string().oneOf(['League of Legends'], 'Jogo inválido').required('Jogo é obrigatório'),
+        tipoJogo: Yup.string().when('game', {
+            is: 'League of Legends',
+            then: Yup.string().required('Tipo de Jogo é obrigatório').oneOf(['5x5 Clássico', '1x1 First Blood', '1x1 Clássico', '5X5 Aram'], 'Modo de jogo inválido')
+        })
+    });
 
     return (
         <Formik
             initialValues={{
-                name: '',
+                teamName: '',
                 game: '',
-                idUser: localStorage.getItem('userId'), // Preenche com o id do usuário se userData estiver definido
+                tipoJogo: '',
             }}
             validationSchema={validationSchema}
             onSubmit={(values, actions) => {
                 console.log(values);
-                http.post('api/v1/teams/register', values, {})
+
+                http.post('auth/register', values, {})
                     .then(response => {
                         console.log(response.data);
                         actions.resetForm();
+                        navigate('/login');
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        console.log(values)
                     });
             }}
         >
-            {({ errors, touched }) => (
+            {({ values, errors, touched, handleChange, setFieldValue }) => (
                 <StyledForm>
                     <img className="logo" src="/imagens/Logo.png" alt="Logo do seu site" />
 
-                    <label htmlFor="name">Nome do Time:</label>
-                    <Field type="text" id="name" name="name" />
-                    <ErrorMessageStyled>{errors.name && touched.name && errors.name}</ErrorMessageStyled>
+                    <label htmlFor="teamName">Valor da Taxa de Entrada</label>
+                    <Field type="text" id="teamName" name="teamName" onChange={handleChange} />
+                    {errors.teamName && touched.teamName && <div className="error-message">{errors.teamName}</div>}
 
                     <label htmlFor="game">Game:</label>
-                    <Field as="select" id="game" name="game">
+                    <Field as="select" id="game" name="game" onChange={(e) => {
+                        handleChange(e);
+                        if (e.target.value === 'League of Legends') {
+                            setFieldValue('game', e.target.value);
+                            setFieldValue('tipoJogo', '');
+                        }
+                    }}>
                         <option value="" disabled defaultValue>Selecione o jogo</option>
                         <option value="League of Legends">League of Legends</option>
                         <option value="Overwatch">Overwatch</option>
                         <option value="Paladins">Paladins</option>
                     </Field>
-                    <ErrorMessageStyled>{errors.game && touched.game && errors.game}</ErrorMessageStyled>
+                    {errors.game && touched.game && values.game !== 'League of Legends' && <div className="error-message">{errors.game}</div>}
 
-                    <label htmlFor="idUser"></label>
-                    <Field type="hidden" id="idUser" name="idUser" value={localStorage.getItem('userId')} />
-                    <ErrorMessageStyled>{errors.idUser && touched.idUser && errors.idUser}</ErrorMessageStyled>
+                    {values.game === 'League of Legends' && (
+                        <div>
+                            <label htmlFor="tipoJogo">Tipo de Jogo:</label>
+                            <Field as="select" id="tipoJogo" name="tipoJogo" onChange={handleChange}>
+                                <option value="" disabled defaultValue>Selecione o Modo</option>
+                                <option value="5x5 Clássico">5x5 Clássico</option>
+                                <option value="1x1 First Blood">1x1 First Blood</option>
+                                <option value="1x1 Clássico">1x1 Clássico</option>
+                                <option value="5X5 Aram">5X5 Aram</option>
+                            </Field>
+                            {errors.tipoJogo && touched.tipoJogo && <div className="error-message">{errors.tipoJogo}</div>}
+                        </div>
+                    )}
 
                     <button type="submit" className="button-cadastro">Cadastre-se</button>
                 </StyledForm>

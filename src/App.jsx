@@ -8,6 +8,8 @@ import Perfil from './pages/perfil'
 import Adm from './pages/adm'
 import Mp from './pages/mercadoPago'
 import Teams from './pages/team'
+import Torneios from './pages/tournament'
+import Teams2 from './pages/teams'
 
  
 function App() {
@@ -24,6 +26,8 @@ function App() {
           <Route path="/Adm" element={<Adm/>} />
           <Route path="/mp" element={<Mp/>} />
           <Route path="/teams" element={< Teams/>} />
+          <Route path="/torneios" element={< Torneios/>} />
+          <Route path="/teamList" element={< Teams2/>} />
       </Routes>
     </BrowserRouter>
    

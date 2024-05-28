@@ -52,7 +52,7 @@ const App = () => {
           <BarSide />
           <ConteudoGaleria>
             <Banner
-              texto="Bem Vindo ao Commom League!"
+              texto="Bem Vindo ao Common League!"
               backgroundImage={bannerBackground}
             />
             <GaleriaPlayers

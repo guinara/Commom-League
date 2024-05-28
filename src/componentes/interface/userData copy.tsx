@@ -17,5 +17,7 @@ export interface UserData {
       accountID: string;
       profileIconId: String;
       summonerLevel: String;
+      
+
   };
 }
