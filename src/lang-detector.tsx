@@ -34,7 +34,7 @@ languageDetector.addDetector({
 
     lookup(options: DetectorOptions) {
         console.log("lookup", options);
-        return "pt";
+        return "ENG";
     },
 
     cacheUserLanguage(lng, options) {

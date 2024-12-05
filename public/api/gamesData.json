@@ -1,0 +1,57 @@
+
+
+[
+    {
+      "id": 1,
+      "title": "League of Legends",
+      "description": "League of Legends is a popular multiplayer online battle arena (MOBA) game developed and published by Riot Games. Released in 2009, it has become one of the most played and influential games in the esports scene. In League of Legends, two teams of five players each compete to destroy the opposing team's Nexus, which is the core building located within their base. Players control characters known as champions, each with unique abilities and roles, such as Tank, Mage, or Marksman. The game is set in the fantasy world of Runeterra, where various regions and factions contribute to the lore of the game. With over 140 champions to choose from, strategic teamwork and skillful play are essential for victory. League of Legends is continuously updated with new content, including champions, skins, and balance changes, ensuring that the game remains fresh and engaging for its global player base.",
+      "category": "moba",
+      "teams": 10,
+      "campeonatos": 66,
+      "img": "./imagens/Games/1.png",
+      "active": 1
+    },
+    {
+      "id": 2,
+      "title": "Valorant",
+      "description": "Valorant is a tactical first-person shooter (FPS) game developed and published by Riot Games. Released in 2020, it combines precise gunplay with unique agent abilities. In Valorant, two teams of five players each compete in matches where one team attacks and the other defends. The attacking team aims to plant a device called the Spike, while the defending team tries to prevent this or defuse the Spike if it is planted. Each agent has a set of special abilities that can influence the flow of the game, such as deploying smoke screens or revealing enemy positions. Valorant's strategic depth and emphasis on teamwork make it a popular choice in the competitive gaming scene.",
+      "category": "fps",
+      "teams": 10,
+      "campeonatos": 20,
+      "img": "./imagens/Games/4.png",
+      "active": 1
+    },
+    {
+      "id": 3,
+      "title": "Paladins",
+      "description": "Paladins is a free-to-play hero shooter game developed and published by Hi-Rez Studios. Released in 2018, it features a diverse roster of champions, each with unique abilities and roles. The game is set in a fantasy world where players choose from a variety of characters to compete in objective-based game modes, such as capturing points or escorting payloads. Paladins offers a customizable experience with a deck-building system that allows players to modify their characters' abilities. The game's blend of traditional shooting mechanics with fantasy elements provides a distinct alternative to other hero shooters.",
+      "category": "fps",
+      "teams": 10,
+      "campeonatos": 10,
+      "img": "./imagens/Games/5.png",
+      "active": 1
+    },
+    {
+      "id": 4,
+      "title": "Overwatch",
+      "description": "Overwatch is a team-based first-person shooter game developed and published by Blizzard Entertainment. Released in 2016, it is known for its colorful graphics and diverse cast of heroes, each with unique abilities and roles. In Overwatch, two teams of six players each compete in various game modes, including payload escort, control point capture, and hybrid modes. The game emphasizes teamwork and strategy, with heroes falling into categories like Tank, Damage, and Support. Overwatch's dynamic gameplay and frequent updates keep the game engaging for its large and dedicated player base.",
+      "category": "fps",
+      "teams": 12,
+      "campeonatos": 50,
+      "img": "./imagens/Games/2.png",
+      "active": 1
+    },
+    {
+      "id": 5,
+      "title": "Teamfight Tactics (TFT)",
+      "description": "Teamfight Tactics (TFT) is an auto-battler game developed and published by Riot Games. Released in 2019, it is set in the League of Legends universe and features a strategic gameplay style where players build and manage their own teams of champions. In TFT, players place their units on a grid-based battlefield, and the units automatically fight against opponents' units. The goal is to be the last player standing by outlasting and outstrategizing others. TFT combines elements of strategy, resource management, and chance, with regular updates and seasons bringing new champions and mechanics to the game.",
+      "category": "auto-battler",
+      "teams": 8,
+      "campeonatos": 15,
+      "img": "./imagens/Games/3.png",
+      "active": 1
+    }
+
+    
+  ]
+  

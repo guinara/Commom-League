@@ -1,6 +1,6 @@
 export interface UserData {
   id: string;
-  email: string;
+  login: string;
   password: string;
   fullName: string;
   cpf: string;
@@ -10,12 +10,12 @@ export interface UserData {
   team: string;
   birthDate: string;
   AccountRiot: {
-    id: string | null;
-    puuid: string | null;
-    gameName: string | null;
-    tagLine: string | null;
-    accountID: string;
-    profileIconId: String;
-    summonerLevel: String;
+      id: string | null;
+      puuid: string | null;
+      gameName: string | null;
+      tagLine: string | null;
+      accountID: string;
+      profileIconId: String;
+      summonerLevel: String;
   };
 }

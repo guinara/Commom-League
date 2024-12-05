@@ -1,22 +1,22 @@
 [
     {
         "id": 0,
-        "titulo": "League of Legends"
+        "titulo": "Tier 1"
     },
     {
         "id": 1,
-        "titulo": "Valorant"
+        "titulo": "Tier 2"
     },
     {
         "id": 2,
-        "titulo": "Overwatch"
+        "titulo": "Tier 3"
     },
     {
         "id": 3,
-        "titulo": "Dota 2"
+        "titulo": "Tier 4"
     },
     {
         "id": 4,
-        "titulo": "Smite"
+        "titulo": "Tier 5"
     }
 ]
