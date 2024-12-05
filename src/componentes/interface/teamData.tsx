@@ -11,8 +11,8 @@ export interface TeamData {
   inGame: boolean | null;
   players: UserData[] | null;
   leader: {
-      id: string | null;
-      login: string | null;
-      fullName: string | null;
+    id: string | null;
+    login: string | null;
+    fullName: string | null;
   } | null;
 }

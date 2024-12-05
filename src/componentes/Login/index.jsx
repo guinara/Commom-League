@@ -73,7 +73,7 @@ const Form = () => {
     return (
         <Formik
             initialValues={{
-                login: '',
+                email: '',
                 password: '',
             }}
             onSubmit={(values, actions) => {
@@ -82,7 +82,7 @@ const Form = () => {
                     .then(response => {
                         sessionStorage.removeItem('token');
                         sessionStorage.setItem('token', response.data.token);
-                        localStorage.setItem('login', values.login);
+                        localStorage.setItem('email', values.email);
                         console.log(response.data);
                         actions.resetForm();
                         navigate('/');
@@ -95,8 +95,8 @@ const Form = () => {
             <StyledForm>
                 <img className="logo" src="/imagens/Logo.png" alt="Logo do seu site" />
 
-                <label htmlFor="login">LOGIN</label>
-                <Field type="text" id="login" name="login" placeholder="Digite seu login" />
+                <label htmlFor="email">LOGIN</label>
+                <Field type="text" id="email" name="email" placeholder="Digite seu login" />
 
                 <label htmlFor="password">SENHA</label>
                 <Field type="password" id="password" name="password" placeholder="Digite sua senha" />

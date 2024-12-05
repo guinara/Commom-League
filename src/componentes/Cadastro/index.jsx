@@ -77,7 +77,7 @@ const validationSchema = Yup.object().shape({
     confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'As senhas devem coincidir'),
     birthDate: Yup.date()
         .max(new Date(), 'Data de nascimento não pode ser maior que a data atual')
-        .test('is-adult', 'Você deve ter mais de 16 anos', function(value) {
+        .test('is-adult', 'Você deve ter mais de 16 anos', function (value) {
             const birthDate = new Date(value);
             const today = new Date();
             const age = today.getFullYear() - birthDate.getFullYear();
@@ -101,18 +101,18 @@ const Form = () => {
     return (
         <Formik
             initialValues={{
-                login: '',
+                email: '',
                 fullName: '',
                 cpf: '',
                 telefone: '',
-                confirmPassword:"",
+                confirmPassword: "",
                 password: '',
                 birthDate: '',
             }}
             validationSchema={validationSchema}
             onSubmit={(values, actions) => {
                 console.log(values);
-           
+
                 http.post('auth/register', values, {})
                     .then(response => {
                         console.log(response.data);
@@ -128,9 +128,9 @@ const Form = () => {
                 <StyledForm>
                     <img className="logo" src="/imagens/Logo.png" alt="Logo do seu site" />
 
-                    <label htmlFor="login">Email:</label>
-                    <Field type="text" id="login" name="login" />
-                    <ErrorMessageStyled>{errors.login && touched.login && errors.login}</ErrorMessageStyled>
+                    <label htmlFor="email">Email:</label>
+                    <Field type="text" id="email" name="login" />
+                    <ErrorMessageStyled>{errors.email && touched.email && errors.email}</ErrorMessageStyled>
 
                     <label htmlFor="fullName">Nome Completo:</label>
                     <Field type="text" id="fullName" name="fullName" />
@@ -139,7 +139,7 @@ const Form = () => {
                     <label htmlFor="cpf">CPF:</label>
                     <Field
                         as={MaskedInput}
-                        mask={[/\d/,/\d/,/\d/,'.',/\d/,/\d/,/\d/,'.',/\d/,/\d/,/\d/,'-',/\d/,/\d/]}
+                        mask={[/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]}
                         type="text"
                         id="cpf"
                         name="cpf"
@@ -149,7 +149,7 @@ const Form = () => {
                     <label htmlFor="telefone">Telefone:</label>
                     <Field
                         as={MaskedInput}
-                        mask={['(',/\d/,/\d/,')',' ',/\d/,/\d/,/\d/,/\d/,/\d/,'-',/\d/,/\d/,/\d/,/\d/]}
+                        mask={['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
                         type="text"
                         id="telefone"
                         name="telefone"

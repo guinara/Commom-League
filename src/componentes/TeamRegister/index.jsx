@@ -82,9 +82,9 @@ const Form = () => {
     const [userData, setUserData] = useState(null);
 
     useEffect(() => {
-        http.get('auth/' + localStorage.getItem('login'))
+        http.get('auth/' + localStorage.getItem('email'))
             .then(response => {
-                setUserData(response.data); 
+                setUserData(response.data);
                 localStorage.setItem('userId', response.data.id);
             })
             .catch(error => {

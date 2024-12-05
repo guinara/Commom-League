@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import http from "../../http";
 import { TeamData } from "../interface/teamData";
-import { Link } from 'react-router-dom'; 
+import { Link } from 'react-router-dom';
 
 const UserListContainer = styled.div`
   display: flex;
@@ -85,7 +85,7 @@ const UserList: React.FC = () => {
   useEffect(() => {
     http.get('api/v1/teams/list')
       .then(response => {
-        setTeamData(response.data); 
+        setTeamData(response.data);
       })
       .catch(error => {
         console.log(error);
@@ -93,19 +93,19 @@ const UserList: React.FC = () => {
   }, []);
 
   const handleJoinTeam = (teamId: string) => {
-    const userId = localStorage.getItem('userId') || ''; 
-    const values = { 
+    const userId = localStorage.getItem('userId') || '';
+    const values = {
       idUser: userId,
       idTeam: teamId,
     };
-    
+
     http.post('api/v1/teams/join', values, {})
-    .then(response => {
+      .then(response => {
         window.location.reload(); // Recarrega a página após a operação de joinTeam
-    })
-    .catch(error => {
+      })
+      .catch(error => {
         console.error('Error:', error);
-    });
+      });
 
     console.log(`Entrando no time ${teamId} com o usuário ${userId}`);
   };

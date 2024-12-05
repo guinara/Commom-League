@@ -61,9 +61,9 @@ const UserList: React.FC = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
 
   useEffect(() => {
-    http.get('auth/' + localStorage.getItem('login'))
+    http.get('auth/' + localStorage.getItem('email'))
       .then(response => {
-        setUserData(response.data); 
+        setUserData(response.data);
         localStorage.setItem('userId', response.data.id);
       })
       .catch(error => {
@@ -79,7 +79,7 @@ const UserList: React.FC = () => {
             <UserProfilePicture src="https://i.pinimg.com/564x/b8/32/49/b832496c377777183a58dd9b9e293d24.jpg" alt="Profile" />
             <UserInfo>
               <strong>{userData.fullName}</strong>
-              <p><strong>Email:</strong>{userData.login}</p>
+              <p><strong>Email:</strong>{userData.email}</p>
             </UserInfo>
           </UserProfile>
           <p><strong>ID:</strong> {userData.id}</p>
