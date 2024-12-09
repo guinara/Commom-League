@@ -609,7 +609,7 @@ const handleWithdraw = async (values: SaleClientRequestDTO) => {
           <StyledBox>
             {language && (
               <img 
-                src={getLanguageFlag()} 
+                src={getLanguageFlag() || '/imagens/bandeiras/ptbr.webp'} 
                 alt="Flag" 
                 style={{ width: 50, height: 30, display: 'block', margin: '0 auto' }} 
               />
