@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from './AuthContext'; // Ajuste o caminho conforme necessário
-import AuthService from '../service/AuthService'; // Importe seu serviço que faz a requisição ao backend
+import AuthService from '../service/authService'; // Importe seu serviço que faz a requisição ao backend
 
 interface ProtectedRouteProps {
   element: JSX.Element;
