@@ -16,6 +16,7 @@ import Card from "../../componentes/GaleryPlayers/Imagens"
 import TermsModal from '../../componentes/Footer/TermModal';
 import PrivacyPolicyModal from '../../componentes/Footer/PrivacyPolicyModal';
 
+
 const Backgroundgradient = styled.main`
   background: linear-gradient(174.61deg, #141d26 4.16%, #1a2633 48%, #151515 96.76%);
   width: 100%;
@@ -48,7 +49,7 @@ const App: React.FC = () => {
   };
 
   const fetchData = () => {
-    fetch('http://localhost:5173/api/gamesData.json')
+    fetch('https://www.commonleague.online/api/gamesData.json')
       .then(res => res.json())
       .then(data => {
         setGames(data);
