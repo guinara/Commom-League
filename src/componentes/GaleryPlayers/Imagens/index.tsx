@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Foto } from '../../../data/types';
-import championshipService from '../../../service/ChampionshipService';
+import championshipService from '../../../service/TornamentService';
 import styled2 from "@emotion/styled";
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
@@ -44,7 +44,7 @@ const Image = styled.img`
     display: block;
 `;
 
-const StatusOverlay = styled.div<{ status: boolean }>`
+const StatusOverlay = styled.div<{ status: string }>`
     position: absolute;
     left: 0;
     right: 0;
@@ -570,14 +570,14 @@ const Imagem: React.FC<ImagemProps> = ({ foto, aoZoomSolicitado, aoAlternarFavor
 `;
 
 
-    const fotosFiltradas = data.filter((item) => {
-        const statusMatch =
-            (selectedStatus === 'emAndamento' && !item.status) ||
-            (selectedStatus === 'finalizado' && item.status) ||
-            selectedStatus === null;
-    
-        return statusMatch;
-    });
+const fotosFiltradas = data.filter((item) => {
+    const statusMatch =
+        (selectedStatus === 'emAndamento' && item.status === 'ONGOING') ||  // Ajuste para comparar com "ONGOING"
+        (selectedStatus === 'finalizado' && item.status === "FINISHED") || // "FINISHED" para status finalizado
+        selectedStatus === null; // Se não houver filtro de status
+
+    return statusMatch;
+});
     
     // Ordenação dos resultados
     let fotosOrdenadas = [...fotosFiltradas];
@@ -639,9 +639,9 @@ const Imagem: React.FC<ImagemProps> = ({ foto, aoZoomSolicitado, aoAlternarFavor
                             alt=""
                             onClick={() => toggleModal(item)} // Passa o item para o modal
                         />
-                        <StatusOverlay status={item.status}>
-                            {item.status ? t("Ongoing") : t("Finished")}
-                        </StatusOverlay>
+<StatusOverlay status={item.status === 'ONGOING' ? 'Ongoing' : 'Finished'}>
+    {item.status === 'ONGOING' ? t("Ongoing") : t("Finished")}
+</StatusOverlay>
                         <InfoContainer>
                             <InfoColumn>
                                 <Info><strong>{item.id}</strong></Info>

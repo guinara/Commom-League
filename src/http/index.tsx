@@ -5,7 +5,7 @@ const http = axios.create({
     baseURL: 'https://api.commonleague.online/',
     headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json', // Define que o corpo enviado será em JSON
+        
         
     },
 });
@@ -21,7 +21,7 @@ http.interceptors.request.use(
     (error: AxiosError) => {
         return Promise.reject(error);
     }
-);
+); 
 
 http.interceptors.response.use(
     (response: AxiosResponse) => {

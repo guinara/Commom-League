@@ -210,23 +210,29 @@ export const formEditProfile = styled.form`
 
 export const buttonSave = styled.button`
   width: 40%;
-  padding: 10px; 
-  border: none; 
+  padding: 10px;
+  border: none;
   left: 60%;
   position: relative;
-  border-radius: 4px; 
-  background-color: #ce0404; 
-  color: white; 
-  cursor: pointer; 
-  font-size: 16px; 
+  border-radius: 4px;
+  background-color: #ce0404;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
   transition: background-color 0.3s;
-  
+
   &:hover {
     background-color: #910505;
-  
+  }
 
-}
-`
+  &.disabled {
+    background-color: #d3d3d3; /* Cor de fundo cinza */
+    border: 1px solid #c0c0c0; /* Cor de borda cinza */
+    cursor: not-allowed; /* Mostrar cursor de não permitido */
+    color: #a0a0a0; /* Cor do texto mais clara */
+  }
+`;
+
 
 export const buttonCancel = styled.button`
   width: 40%;

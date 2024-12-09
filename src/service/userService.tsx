@@ -8,7 +8,7 @@ interface User {
 
 class UserService extends ApiService {
   constructor() {
-    super('api/user.json');
+    super('/user');
   }
 
   findById(id: number): Promise<any> {
@@ -20,7 +20,7 @@ class UserService extends ApiService {
   }
 
   update(user: User): Promise<any> {
-    return this.put(`/${user.id}`, user);
+    return this.put("", user);
   }
 
   consult(): Promise<any> {

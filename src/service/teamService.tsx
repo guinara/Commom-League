@@ -18,6 +18,10 @@ class TeamService extends ApiService {
     return this.get('');
   }
 
+  getProfiles() {
+    return this.get('/profile');
+  }
+
   currentTeam() {
     return this.get('/current');
   }
@@ -31,8 +35,8 @@ class TeamService extends ApiService {
     return this.post(`/join`, team);
   }
 
-  invite(team: Team) {
-    return this.post(`/invite`, team);
+  invite(teamId: string) {
+    return this.post(`/invite?user=${teamId}`, teamId);
   }
 
   ban(userId: String) {

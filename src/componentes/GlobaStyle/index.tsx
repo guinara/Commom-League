@@ -2,7 +2,10 @@ import { createGlobalStyle } from 'styled-components';
 import GandhiSansRegular from './fontes/GandhiSans-Regular.otf';
 import GandhiSansBold from './fontes/GandhiSans-Bold.otf';
 
+
 const EstilosGlobais = createGlobalStyle`
+ @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+ 
   @font-face {
     font-family: 'GandhiSansRegular';
     src: local('Gandhi Sans Regular'), local('GandhiSansRegular'), url(${GandhiSansRegular});

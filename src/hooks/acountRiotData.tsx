@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
 import PlayerService from '../service/playerService';
-import TeamService from '../service/ChampionshipService';
-import GameService from '../service/ChampionshipService'; // Atualize o caminho, se necessário
+import TeamService from '../service/TornamentService';
+import GameService from '../service/TornamentService'; // Atualize o caminho, se necessário
 
 interface CreateAutoCompleteProps {
   name: 'player' | 'team' | 'game';

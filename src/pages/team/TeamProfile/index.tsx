@@ -280,8 +280,6 @@ interface TeamFormValues {
   user: string;  // Agora apenas um jogador
 }
 
-
-
 const StyledForm = styled(FormikForm)`
   max-width: 600px;
   margin: 0px;
@@ -292,7 +290,6 @@ const StyledForm = styled(FormikForm)`
   display: flex;
   flex-direction: column;
 `;
-
 
 const App: React.FC = () => {
   const [active, setActive] = useState(false);
@@ -359,19 +356,16 @@ if (captain) {
 
   const handleSubmit = async (values: TeamFormValues) => {
     // Criação de um objeto `Team` com o `id` e outros dados necessários
-    const teamData: Team = {
-      id: values.player,  // Supondo que `id` venha de algum lugar, como o formulário
-      user: values.player, // Adicionando os jogadores
-      // Se houver mais dados, adicione-os aqui
-    };
+   
+     
 
     const token = sessionStorage.getItem("authToken");
     const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
     try {
       // Enviar o objeto `teamData` corretamente para o `invite`
-      console.log(teamData)
-      const response = await teamService.invite(teamData);  // Enviar sem FormData, apenas o objeto `Team`
+      console.log(values.user)
+      const response = await teamService.invite(values.user);  // Enviar sem FormData, apenas o objeto `Team`
       toast.success("Convite enviado com sucesso!");  // Mensagem do toast
     } catch (error) {
       console.log(values);  // Exibindo os valores no console caso haja erro
@@ -485,12 +479,6 @@ if (captain) {
       ),
   });
 
-
-  const matches = [
-    { teamA: 'Team A', teamB: 'Team B', matchId: 'BR1_2548787' },
-    { teamA: 'Team C', teamB: 'Team D', matchId: 'BR1_2548788' },
-    { teamA: 'Team E', teamB: 'Team F', matchId: 'BR1_2548789' },
-  ];
 
   const handleInvite = (name: string) => {
     console.log(`Convidar jogador: ${name}`);

@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from 'react';
-
 import { styled } from 'styled-components';
 import EstilosGlobais from '../../../componentes/GlobaStyle';
-import Perfil from '../../../componentes/Perfil';
-import UserList from '../../../componentes/userList';
 import SideMenu from '../../../componentes/mainSideBar/SideMenu';
 import Header from '../../../componentes/MainHeader';
 import * as Components from './component';
-import { Formik, FormikHelpers } from "formik";
+import { Formik, FormikHelpers, useFormik } from "formik";
 import AuthService, { User } from "../../../service/authService";
 import http from '../../../http';
 import axios from 'axios';
-import FileService from "../../../service/fileService";
-import CreateAutoComplete from '../../../componentes/optionTest';
+import lolAccountService from "../../../service/lolAccountService";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { set } from 'react-hook-form';
+import UserService from '../../../service/userService';
 
 const Backgroundgradient = styled.main`
   background: linear-gradient(174.61deg, #141d26 4.16%, #1a2633 48%, #151515 96.76%);
@@ -39,14 +37,52 @@ const App: React.FC = () => {
   const [userImage, setUserImage] = useState<string>('../../../public/imagens/userIcons/0.jpg');
   const [isUserFetched, setIsUserFetched] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null); // Estado para a pré-visualização da imagem
-
+  const [accountDetails, setAccountDetails] = useState<{ gameName: string, tagLine: string }>({
+    gameName: '',
+    tagLine: ''
+  });
   const currentUserString = sessionStorage.getItem('currentUser');
   const currentUser = currentUserString ? JSON.parse(currentUserString) : null;
   const authService = new AuthService();
-  const fileService = new FileService();
+  const LolAccountService = new lolAccountService;
+  const userService = new UserService;
+  const [ativo, setAtivo] = useState(true); // Definindo o valor inicial como 'true'
 
+  
 
+  const formik = useFormik({
+    initialValues: {
+      gameName: '',
+      tagLine: ''
+    },
+    onSubmit: (values) => {
+      console.log(values);
+    }
+  });
 
+  useEffect(() => {
+    const fetchRiotAccountDetails = async () => {
+      try {
+        const response = await LolAccountService.findCurrentAccount();
+        const { gameName, tagLine } = response.data;
+        
+        setAccountDetails({ gameName, tagLine });
+
+        // Atualiza os valores no Formik usando setValues
+        formik.setValues({
+          gameName,
+          tagLine
+        });
+
+        setActive(true)
+      } catch (error) {
+        setActive(false)
+        console.error("Erro ao buscar os dados da conta Riot:", error);
+      }
+    };
+
+    fetchRiotAccountDetails();
+  }, []); // Executa o efeito uma vez ao montar o componente
   useEffect(() => {
     if (currentUser && !isUserFetched) {
       authService.findById(currentUser.id)
@@ -82,13 +118,14 @@ const App: React.FC = () => {
   ) => {
     actions.setSubmitting(true);
     try {
-      const response = await authService.general(values, actions);
-      toast.success(response);
+      const response = await userService.update(values);
+      toast.success(response.data);
 
       console.log(values)
       // Atualizando os dados do usuário no cache
       const updatedUser = { ...user, ...values };
       updateUserInCache(updatedUser); // Atualiza o cache com os novos dados
+      window.location.reload();
     } catch (error) {
       console.error("Erro ao salvar informações gerais:", error);
     } finally {
@@ -96,64 +133,30 @@ const App: React.FC = () => {
     }
   };
 
-  const handleAvatarSubmit = async (values: any) => {
-    const formData = new FormData();
-    
-    formData.append("file", values.image); 
-    formData.append("userId", values.userId); 
-  
-    const token = sessionStorage.getItem("authToken"); 
-    const headers = token ? { Authorization: `Bearer ${token}` } : {};
-  
-    try {
-      const response = await axios.put(
-        `http://localhost:8080/api/files/${currentUser ? currentUser.image : 'Error'}`, 
-        formData, 
-        { headers }
-      );
-      toast.success("Avatar Salvo:");
-    } catch (error) {
-      toast.error("ERRO - Avatar");
-      console.error("Erro ao salvar Avatar:", error);
-    }
-  };
 
-  const handleLanguagePreferencesSubmit = async (values: any) => {
-    try {
-      const response = await axios.put(`${http.defaults.baseURL}/api/user/updateLanguagePreferences`, values);
-      console.log("Language Preferences Saved:", response.data);
-
-      // Atualizando os dados de preferências de linguagem no sessionStorage
-      const updatedUser = { ...user, language: values.language, leagueRegion: values.leagueRegion };
-      updateUserInCache(updatedUser);
-    } catch (error) {
-      console.error("Error saving Language Preferences:", error);
-    }
-  };
-
-  const handleAccountDetailsSubmit = async (values: any) => {
-    try {
-      const response = await axios.put(`${http.defaults.baseURL}/api/user/updateAccountDetails`, values);
-      console.log("Account Details Saved:", response.data);
-
-      // Atualizando os detalhes da conta no sessionStorage
-      const updatedUser = { ...user, ...values };
-      updateUserInCache(updatedUser);
-    } catch (error) {
-      console.error("Error saving Account Details:", error);
-    }
-  };
 
   const handleRiotDetailsSubmit = async (values: any) => {
     try {
-      const response = await axios.put(`${http.defaults.baseURL}/api/user/updateRiotDetails`, values);
+      const response = await http.post('/lol/account', {
+        gameName: values.gameName,
+        tagLine: values.tagLine,
+      });
+  
       console.log("Riot Details Saved:", response.data);
-
-      // Atualizando os detalhes da conta Riot no sessionStorage
-      const updatedUser = { ...user, AccountRiot: { ...user?.AccountRiot, ...values } };
-      updateUserInCache(updatedUser);
+      toast.success("Riot Details updated successfully!");
+      window.location.reload();
     } catch (error) {
-      console.error("Error saving Riot Details:", error);
+      // Verificando se o erro é um erro do Axios
+      if (axios.isAxiosError(error)) {
+        console.error("Error saving Riot Details:", error);
+        console.error("Error response:", error.response);  // Verifique toda a resposta aqui
+  
+        // Tente acessar diretamente o erro completo para ver o status e a mensagem
+        toast.error(`Error: ${error.response?.data?.message || error.response?.statusText || 'Unknown error'}`);
+      } else {
+        console.error("Unknown error:", error);
+        toast.error("Unknown error occurred.");
+      }
     }
   };
 
@@ -209,18 +212,6 @@ const App: React.FC = () => {
           value={values.nickname}
         />
 
-        <Components.formEditLabel htmlFor="fullName">Real Name</Components.formEditLabel>
-        <Components.formEditInput
-          type="text"
-          id="fullName"
-          name="fullName"
-          onChange={(e) => {
-            handleChange(e);
-            setFieldValue('fullName', e.target.value); // Atualiza o campo em tempo real
-          }}
-          value={values.fullName}
-        />
-
         <Components.formEditLabel htmlFor="pixKey">Pix Key</Components.formEditLabel>
         <Components.formEditInput
           type="text"
@@ -258,199 +249,60 @@ const App: React.FC = () => {
 )}
 
 
-            {/* Avatar Form */}
-            {selectedOption === 'Avatar' && (
-     <Formik
-     initialValues={{ image: null }}
-     onSubmit={handleAvatarSubmit}
-   >
-     {({ setFieldValue, handleSubmit, isSubmitting, values }) => (
-       <Components.formEditProfile autoComplete="off" onSubmit={handleSubmit}>
-         <input
-           type="file"
-           accept="image/*"
-           onChange={(e) => {
-             const file = e.target.files ? e.target.files[0] : null;
-             if (file) {
-               setFieldValue('image', file);
-               setPreviewImage(URL.createObjectURL(file)); // Atualiza a pré-visualização
-             }
-           }}
-         />
-         
-         {/* Mostrar a pré-visualização da imagem, se houver */}
-         {previewImage && (
-           <div>
-             <img 
-               src={previewImage} 
-               alt="Preview" 
-               style={{ width: '150px', height: '150px', objectFit: 'cover', marginTop: '10px' }} 
-             />
-           </div>
-         )}
-         
-         <Components.buttonSave type="submit" disabled={isSubmitting}>
-           Save Avatar
-         </Components.buttonSave>
-       </Components.formEditProfile>
-     )}
-   </Formik>
-            )}
 
-            {/* Language Preferences Form */}
-            {selectedOption === 'Language Preferences' && (
-              <Formik
-                initialValues={{
-                  language: currentUser?.language || '',
-                  leagueRegion: currentUser?.leagueRegion || '',
-                }}
-                onSubmit={handleLanguagePreferencesSubmit}
-              >
-                {({ handleChange, values, handleSubmit, isSubmitting }) => (
-                  <Components.formEditProfile autoComplete="off" onSubmit={handleSubmit}>
-                    <Components.formEditLabel htmlFor="language">Language</Components.formEditLabel>
-                    <Components.formEditInput
-                      type="text"
-                      id="language"
-                      name="language"
-                      onChange={handleChange}
-                      value={values.language}
-                    />
 
-                    <Components.formEditLabel htmlFor="leagueRegion">League Region</Components.formEditLabel>
-                    <Components.formEditInput
-                      type="text"
-                      id="leagueRegion"
-                      name="leagueRegion"
-                      onChange={handleChange}
-                      value={values.leagueRegion}
-                    />
+{selectedOption === 'Riot Detail' && (
+  <Formik
+    initialValues={{
+      gameName: accountDetails.gameName,
+      tagLine: accountDetails.tagLine
+    }}
+    onSubmit={handleRiotDetailsSubmit}
+  >
+    {({ handleChange, values, handleSubmit, isSubmitting }) => (
+      <Components.formEditProfile autoComplete="off" onSubmit={handleSubmit}>
+        <Components.formEditLabel htmlFor="gameName">Game Name</Components.formEditLabel>
+        <Components.formEditInput
+          type="text"
+          id="gameName"
+          name="gameName"
+          onChange={handleChange}
+          value={values.gameName}
+        />
 
-                    <Components.buttonSave type="submit" disabled={isSubmitting}>Save Language Preferences</Components.buttonSave>
-                  </Components.formEditProfile>
-                )}
-              </Formik>
-            )}
+        <Components.formEditLabel htmlFor="tagLine">Tag</Components.formEditLabel>
+        <Components.formEditInput
+          type="text"
+          id="tagLine"
+          name="tagLine"
+          onChange={handleChange}
+          value={values.tagLine}
+        />
 
-            {/* Account Details Form */}
-            {selectedOption === 'Account Detail' && (
-              <Formik
-                initialValues={{
-                  email: currentUser?.email || '',
-                  userName: currentUser?.userName || '',
-                  password: '',
-                  newPassword: '',
-                  confirmNewPassword: '',
-                  cpf: currentUser?.cpf || '',
-                  telefone: currentUser?.telefone || '',
-                }}
-                onSubmit={handleAccountDetailsSubmit}
-              >
-                {({ handleChange, values, handleSubmit, isSubmitting }) => (
-                  <Components.formEditProfile autoComplete="off" onSubmit={handleSubmit}>
-                    <Components.formEditLabel htmlFor="email">Email</Components.formEditLabel>
-                    <Components.formEditInput
-                      type="email"
-                      id="email"
-                      name="email"
-                      onChange={handleChange}
-                      value={values.email}
-                    />
-
-                    <Components.formEditLabel htmlFor="userName">Username</Components.formEditLabel>
-                    <Components.formEditInput
-                      type="text"
-                      id="userName"
-                      name="userName"
-                      onChange={handleChange}
-                      value={values.userName}
-                    />
-
-                    <Components.formEditLabel htmlFor="password">Password</Components.formEditLabel>
-                    <Components.formEditInput
-                      type="password"
-                      id="password"
-                      name="password"
-                      onChange={handleChange}
-                      value={values.password}
-                    />
-
-                    <Components.formEditLabel htmlFor="newPassword">New Password</Components.formEditLabel>
-                    <Components.formEditInput
-                      type="password"
-                      id="newPassword"
-                      name="newPassword"
-                      onChange={handleChange}
-                      value={values.newPassword}
-                    />
-
-                    <Components.formEditLabel htmlFor="confirmNewPassword">Confirm New Password</Components.formEditLabel>
-                    <Components.formEditInput
-                      type="password"
-                      id="confirmNewPassword"
-                      name="confirmNewPassword"
-                      onChange={handleChange}
-                      value={values.confirmNewPassword}
-                    />
-
-                    <Components.formEditLabel htmlFor="cpf">CPF</Components.formEditLabel>
-                    <Components.formEditInput
-                      type="text"
-                      id="cpf"
-                      name="cpf"
-                      onChange={handleChange}
-                      value={values.cpf}
-                    />
-
-                    <Components.formEditLabel htmlFor="telefone">Phone</Components.formEditLabel>
-                    <Components.formEditInput
-                      type="text"
-                      id="telefone"
-                      name="telefone"
-                      onChange={handleChange}
-                      value={values.telefone}
-                    />
-
-                    <Components.buttonSave type="submit" disabled={isSubmitting}>Save Account Details</Components.buttonSave>
-                  </Components.formEditProfile>
-                )}
-              </Formik>
-            )}
-
-            {/* Riot Details Form */}
-            {selectedOption === 'Riot Detail' && (
-              <Formik
-                initialValues={{
-                  gameName: currentUser?.AccountRiot?.gameName || '',
-                  tagLine: currentUser?.AccountRiot?.tagLine || '',
-                  leagueRegion: currentUser?.AccountRiot?.leagueRegion || '',
-                }}
-                onSubmit={handleRiotDetailsSubmit}
-              >
-                {({ handleChange, values, handleSubmit, isSubmitting }) => (
-                  <Components.formEditProfile autoComplete="off" onSubmit={handleSubmit}>
-                    <Components.formEditLabel htmlFor="gameName">Riot Username</Components.formEditLabel>
-                    <Components.formEditInput
-                      type="text"
-                      id="gameName"
-                      name="gameName"
-                      onChange={handleChange}
-                      value={values.gameName}
-                    />
-
-                    <Components.formEditLabel htmlFor="tagLine">Tag</Components.formEditLabel>
-                    <Components.formEditInput
-                      type="text"
-                      id="tagLine"
-                      name="tagLine"
-                      onChange={handleChange}
-                      value={values.tagLine}
-                    />
-
-                    <Components.buttonSave type="submit" disabled={isSubmitting}>Save Riot Details</Components.buttonSave>
-                  </Components.formEditProfile>
-                )}
-              </Formik>
+        <Components.buttonSave 
+        type="submit" hidden={active}>Save Riot Details</Components.buttonSave>
+        
+        {/* Botão de Desconectar */}
+        <Components.buttonSave
+          type="button"  // Tipo 'button' para não enviar o formulário
+          hidden={!active}
+          onClick={async () => {
+            try {
+              const response = await LolAccountService.disconnect(); // Chama a função de desconectar
+              console.log("Desconectado com sucesso:", response);
+              toast.success("Riot account disconnected successfully!");
+              setAccountDetails({ gameName: '', tagLine: '' });  // Limpa os dados da conta
+            } catch (error) {
+              console.error("Erro ao desconectar:", error);
+              toast.error("Error disconnecting from Riot account.");
+            }
+          }}
+        >
+          Disconnect Riot Account
+        </Components.buttonSave>
+      </Components.formEditProfile>
+    )}
+  </Formik>
             )}
           </Components.UserFormEditBanner>
         </Components.Banner>

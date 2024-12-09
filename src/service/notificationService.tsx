@@ -16,6 +16,9 @@ class NotificationService extends ApiService {
     super('');
   }
 
+  getInventory() {
+  }
+
   findById(id: number) {
     return this.get(`/${id}`);
   }
@@ -26,12 +29,12 @@ class NotificationService extends ApiService {
 
  
   accept(notificaton: Notification) {  
-    return this.put(`/${notificaton.userId}/notifications/${notificaton.id}/accept`, notificaton);
+    return this.put(`team/invite/${notificaton.userId}/accept`, notificaton);
   }
 
    
  reject(notificaton: Notification) {  
-      return this.put(`/${notificaton.userId}/notifications/${notificaton.id}/reject`, notificaton);
+      return this.put(`team/invite/${notificaton.userId}/refuse`, notificaton);
     }
 
 
@@ -45,6 +48,7 @@ class NotificationService extends ApiService {
   remove(id: number) {
     return this.delete(`/${id}`);
   }
+
 
 }
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import styled from 'styled-components';
-import EnumService from '../service/EnumService';
+
 
 type Props = {
   name: string;

@@ -9,9 +9,12 @@ import * as Components from './component';
 import GameSwiper from '../../componentes/Banner/newBannerCarrosel';
 import Header from "../../componentes/MainHeader";
 import Home from "../chapinhips/home";
-import Footer from "../../componentes/Footer";
+import Footer from "../../componentes/Footer/Footer";
 import { Game, Foto } from '../../data/types';
 import Card from "../../componentes/GaleryPlayers/Imagens"
+// Importando os modais
+import TermsModal from '../../componentes/Footer/TermModal';
+import PrivacyPolicyModal from '../../componentes/Footer/PrivacyPolicyModal';
 
 const Backgroundgradient = styled.main`
   background: linear-gradient(174.61deg, #141d26 4.16%, #1a2633 48%, #151515 96.76%);
@@ -36,6 +39,10 @@ const App: React.FC = () => {
   const [active, setActive] = useState(false);
   const [games, setGames] = useState<Game[]>([]);
 
+    // Estado para controlar a abertura dos modais
+    const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+    const [isPrivacyPolicyModalOpen, setIsPrivacyPolicyModalOpen] = useState(false);
+
   const handleTogleActive = () => {
     setActive(!active);
   };
@@ -54,6 +61,14 @@ const App: React.FC = () => {
   }, []);
 
 
+    // Funções para abrir e fechar os modais
+    const openTermsModal = () => setIsTermsModalOpen(true);
+    const closeTermsModal = () => setIsTermsModalOpen(false);
+  
+    const openPrivacyPolicyModal = () => setIsPrivacyPolicyModalOpen(true);
+    const closePrivacyPolicyModal = () => setIsPrivacyPolicyModalOpen(false);
+
+
   return (
     <Components.Main>
       <Backgroundgradient>
@@ -63,7 +78,14 @@ const App: React.FC = () => {
           <Header toggleActive={handleTogleActive} />
           <Home games={games} />
           <Card/>
-          <Footer/>
+          <Footer 
+            openTermsModal={openTermsModal} 
+            openPrivacyPolicyModal={openPrivacyPolicyModal} 
+          />
+          
+          {/* Exibindo os modais */}
+          <TermsModal isOpen={isTermsModalOpen} onClose={closeTermsModal} />
+          <PrivacyPolicyModal isOpen={isPrivacyPolicyModalOpen} onClose={closePrivacyPolicyModal} />
         </Components.Banner>
       </Backgroundgradient>
     </Components.Main>

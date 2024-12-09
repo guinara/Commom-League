@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Foto } from '../../data/types'; 
 import Imagem from './Imagens';
 import Populares from './Populares'; 
-import championshipService from '../../service/ChampionshipService'
+import championshipService from '../../service/TornamentService'
 
 const FilterContainer = styled.div`
     margin-bottom: 20px;

@@ -7,7 +7,7 @@ interface Match {
 
 class MatchService extends ApiService {
   constructor() {
-    super('api/info');
+    super('match');
   }
 
   getAccounts(): Promise<any> {
@@ -15,7 +15,45 @@ class MatchService extends ApiService {
   }
 
 
-  
+  consult() {
+    return this.get('');
+  }
+
+  findAll() {
+    return this.get('');
+  }
+
+  findById(id: string) {
+    return this.get(`${id}`);
+  }
+
+  findByTournament(id: string) {
+    return this.get(`${id}`);
+  }
+
+  findTeamsByTournament(id: string) {
+    return this.get(`${id}`);
+  }
+
+
+  getCurrentTournamentJoin() {
+    return this.get('/join');
+  }
+
+
+  RegisterForTournament(id: string) {
+    return this.post('', id);
+  }
+
+  cancelTournamentJoin() {
+    return this.delete(``);
+  }
+
+  //admin
+  startTournament(TornamentId: string) {
+    return this.post(`/${TornamentId}/start`, TornamentId);
+  }
+
 
 }
 
