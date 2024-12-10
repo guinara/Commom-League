@@ -16,7 +16,6 @@ import TorneioAguardando from './pages/Tournament/TournamentWaitingPage';
 import TorneioPlaying from './pages/Tournament/TournamentPlayingPage';
 import ChampionshipService from './service/TornamentService';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 
 const PurchaseStatusToast: React.FC = () => {
