@@ -31,10 +31,6 @@ interface FormValues {
   confirmPassword: string;
 }
 
-interface FooterProps {
-  openPrivacyPolicyModal: () => void;
-  openTermsModal: () => void;
-}
 
 interface FormValuesLogin {
   email: string;
@@ -112,7 +108,7 @@ const ErrorMessageStyled = styled.div`
 
 
 
-const App: React.FC<FooterProps> = ({ openPrivacyPolicyModal, openTermsModal }) => {
+const App: React.FC = () => {
   const { t, i18n } = useTranslation();
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng)
@@ -126,15 +122,9 @@ const App: React.FC<FooterProps> = ({ openPrivacyPolicyModal, openTermsModal }) 
     '/imagens/galeria/6.mp4'
   ];
 
-  // Função chamada quando a checkbox for alterada
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {
-      openPrivacyPolicyModal();  // Abre o modal quando a checkbox for marcada
-    }
-  };
+
 
   useEffect(() => {
-    // Limpar os tokens do sessionStorage e localStorage
     sessionStorage.removeItem('token');
     localStorage.removeItem('token');
   }, [navigate]);

@@ -16,7 +16,7 @@ import TorneioAguardando from './pages/Tournament/TournamentWaitingPage';
 import TorneioPlaying from './pages/Tournament/TournamentPlayingPage';
 import ChampionshipService from './service/TornamentService';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 
 
 const PurchaseStatusToast: React.FC = () => {
@@ -51,6 +51,16 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true); 
   const championshipService = new ChampionshipService();
 
+
+   // Funções para abrir os modais
+   const openPrivacyPolicyModal = () => {
+    console.log('Abrindo modal de Política de Privacidade');
+  };
+
+  const openTermsModal = () => {
+    console.log('Abrindo modal de Termos de Uso');
+  };
+  
   useEffect(() => {
     const fetchTournamentResults = async () => {
       try {
