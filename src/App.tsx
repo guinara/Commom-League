@@ -18,13 +18,13 @@ import ChampionshipService from './service/TornamentService';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// Componente para capturar e exibir os toasts baseados no status da URL
+
 const PurchaseStatusToast: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
-    const status = queryParams.get('status'); // Captura o status da URL
+    const status = queryParams.get('status'); 
 
     if (status) {
       switch (status) {
@@ -41,24 +41,23 @@ const PurchaseStatusToast: React.FC = () => {
           break;
       }
     }
-  }, [location.search]); // Re-exibe o toast sempre que a URL mudar
+  }, [location.search]); 
 
-  return null; // Este componente não precisa renderizar nada
+  return null; 
 };
 
 const App: React.FC = () => {
-  const [tournamentData, setTournamentData] = useState<any>(null); // Estado para armazenar os dados do torneio
-  const [loading, setLoading] = useState<boolean>(true); // Estado para controle de carregamento
+  const [tournamentData, setTournamentData] = useState<any>(null); 
+  const [loading, setLoading] = useState<boolean>(true); 
   const championshipService = new ChampionshipService();
 
   useEffect(() => {
-    // Função para buscar os dados do torneio
     const fetchTournamentResults = async () => {
       try {
         setLoading(true);
         const response = await championshipService.getCurrentTournamentJoin();
         const data = response.data;
-        setTournamentData(data); // Armazena os dados no estado
+        setTournamentData(data); 
       } catch (error) {
         console.error('Erro ao carregar os resultados do torneio', error);
       } finally {
@@ -66,21 +65,21 @@ const App: React.FC = () => {
       }
     };
 
-    fetchTournamentResults(); // Chama a função para carregar os dados
-  }, []); // Recarregar apenas uma vez quando o componente for montado
+    fetchTournamentResults(); 
+  }, []); 
 
-  // Função para renderizar a rota do torneio com base no estado
+
   const renderTournamentRoute = () => {
     if (loading) {
-      return <div>Carregando...</div>; // Exibe carregamento enquanto busca os dados
+      return <div>Carregando...</div>; 
     }
 
     if (tournamentData) {
       switch (tournamentData.status) {
         case "PLAYING":
-          return <Navigate to="/championship/playing" />; // Redireciona para a rota de "jogando"
+          return <Navigate to="/championship/playing" />;
         case "WAITING":
-          return <Navigate to="/championship/waiting" />; // Redireciona para a rota de "aguardando"
+          return <Navigate to="/championship/waiting" />; 
         default:
           return <Navigate to="/championship" />; // Caso o status não seja reconhecido, vai para a página padrão
       }
@@ -97,7 +96,7 @@ const App: React.FC = () => {
         <Routes>
           {/* Rotas principais */}
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<ProtectedRoute element={<Home />} />} />
 
           {/* Rotas protegidas */}
           <Route path="/adm" element={<ProtectedRoute element={<Adm />} />} />

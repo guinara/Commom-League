@@ -7,7 +7,7 @@ import GTranslateIcon from '@mui/icons-material/GTranslate';
 import {Dialog, DialogActions, DialogContent, DialogTitle, Tabs, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow , Modal, Button, TextField, Typography, Select, MenuItem, FormControl, InputLabel, Box } from '@mui/material';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import AuthService, { User } from "../../service/authService";
+import AuthService, { User } from "../../service/AuthService";
 import http from '../../http';
 import { FaCoins } from 'react-icons/fa'; // Ícone de ficha
 import { useNavigate } from "react-router-dom";
@@ -20,6 +20,100 @@ import ChipsService from '../../service/ChipsService';
 import  InventoryService  from '../../service/inventoryService';
 import TransacitonService from '../../service/TransactionService';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import { NotificationImportant, GroupAdd } from '@mui/icons-material'; // Importação correta dos ícones
+
+// Modal customizado
+const StyledModalCustom = styled(Modal)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+`;
+
+const StyledBoxCustom = styled(Box)`
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  overflow: hidden;
+`;
+
+// Título das notificações
+const ModalTitleCustom = styled(Typography)`
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+`;
+
+// Caixa de notificação
+const NotificationWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #f1f1f1;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+// Ícone da notificação
+const NotificationIconWrapper = styled.div`
+  margin-right: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  background-color: #eee;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+// Texto da notificação
+const NotificationTextCustom = styled(Typography)`
+  font-size: 0.875rem;
+  color: #666;
+  margin-top: 5px;
+  flex-grow: 1;
+`;
+
+// Caixa de botões de ação
+const ButtonWrapperCustom = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  gap: 10px;
+`;
+
+// Botões estilizados
+const StyledButtonCustom = styled(Button)`
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  font-weight: bold;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+
 
 
 const StyledBox = styled.div`
@@ -92,6 +186,12 @@ const StyledToggleButton = styled.button`
     background-color: #0056b3;
   }
 `;
+
+
+
+
+
+
 
 interface Notification {
   relaredId: string;
@@ -202,6 +302,7 @@ const Header: React.FC<HeaderProps> = ({ toggleActive, reloadBalance  }) => {
   const [language, setLanguage] = useState<string>('');
   const [userName, setUserName] = useState<string | null>(null);
   const [saldo, setSaldo] = useState<number | null>(null);
+  const [saldoFicha, setSaldoFicha] = useState<number | null>(null);
   const [userImage, setUserImage] = useState<string>(); 
   const authService = new AuthService();
   const chipsService = new ChipsService();
@@ -410,10 +511,11 @@ const handleWithdraw = async (values: SaleClientRequestDTO) => {
       try {
         const response = await inventoryService.getInventory(); // Chama a função consult() e aguarda a resposta
         console.log('Dados do Inventory:', response.data); // Exibe os dados no console
-
+      
         // Verifica se o array de dados não está vazio e pega o valor de qnt do primeiro item
         if (response.data && response.data.length > 0) {
-          setSaldo(response.data[0].qnt); // Atualiza o saldo com o valor de qnt do primeiro item
+          console.log(`saldo ${response.data[0].qnt}`);
+          setSaldoFicha(response.data[0].qnt); // Atualiza o saldo com o valor de qnt do primeiro item
         } else {
           console.error('Nenhum item encontrado no inventário.');
         }
@@ -697,127 +799,56 @@ const handleWithdraw = async (values: SaleClientRequestDTO) => {
         </div>
       </div>
 
-      <Modal
-      open={isMPOpen}
-      onClose={closeMPModal}
-      aria-labelledby="modal-title"
-      aria-describedby="modal-description"
+      <StyledModalCustom
+      open={isNotificationsOpen}
+      onClose={closeNotificationsModal}
+      aria-labelledby="notifications-modal-title"
+      aria-describedby="notifications-modal-description"
     >
-      <Box
-        sx={{
-          padding: 2,
-          width: 400,
-          bgcolor: 'background.paper',
-          borderRadius: 2,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-        }}
-      >
-        <Typography variant="h6">
-          {modalStep === 'addFunds' ? 'Adicionar Fichas' : 'Saque de Fichas'}
-        </Typography>
-
-        <Button
-          variant="outlined"
-          sx={{ marginTop: 2 }}
-          onClick={() => setModalStep(prev => (prev === 'addFunds' ? 'withdraw' : 'addFunds'))}
-        >
-          {modalStep === 'addFunds' ? 'Ir para Sacar' : 'Ir para Adicionar Fichas'}
-        </Button>
-
-        {modalStep === 'addFunds' ? (
-          <Formik
-            initialValues={{ qnt: '' }}
-            onSubmit={handleSearch}
-          >
-            {({ setFieldValue, values }) => (
-              <FormikForm>
-                <Box sx={{ marginTop: 2 }}>
-                  <Typography variant="body1">
-                    {saldo != null ? `Fichas disponíveis: ${saldo} Fichas` : 'Fichas não disponíveis'}
-                  </Typography>
-
-                  <Typography variant="body2" sx={{ marginTop: 1 }}>
-                    {values.qnt != null ? `Fichas a adicionar: ${values.qnt} Fichas` : ''}
-                  </Typography>
-
-                  <Box sx={{ display: 'flex', gap: 1, marginTop: 2 }}>
-                    <Button type="button" onClick={() => setFieldValue('qnt', 1)}>
-                      1 Ficha
-                    </Button>
-                    <Button type="button" onClick={() => setFieldValue('qnt', 2)}>
-                      2 Fichas
-                    </Button>
-                    <Button type="button" onClick={() => setFieldValue('qnt', 5)}>
-                      5 Fichas
-                    </Button>
-                    <Button type="button" onClick={() => setFieldValue('qnt', 10)}>
-                      10 Fichas
-                    </Button>
-                  </Box>
-                </Box>
-
-                <TextField
-                  type="number"
-                  id="qnt"
-                  name="qnt"
-                  placeholder="Digite a quantidade de fichas"
-                  fullWidth
-                  sx={{ marginTop: 2 }}
-                />
-                <ErrorMessage
-                  name="qnt"
-                  component="div"
-                  style={{ color: 'red', marginBottom: '10px' }}
-                />
-                <Button
-                  type="submit"
-                  variant="contained"
-                  disabled={isLoading}
-                  sx={{ marginTop: 2 }}
-                >
-                  {isLoading ? 'Carregando...' : 'Comprar'}
-                </Button>
-              </FormikForm>
-            )}
-          </Formik>
-        ) : modalStep === 'withdraw' ? (
-          <Box>
-            <Typography variant="body1">
-              Fichas atuais: {saldo !== null ? `${saldo} Fichas` : 'Carregando...'}
-            </Typography>
-            {saldo && saldo >= 50 ? (
-              <>
-                <Button variant="contained" onClick={handleWithdraw}>
-                  Sacar
-                </Button>
-                <Typography variant="body2">{saldo} Fichas</Typography>
-              </>
-            ) : (
-              <Typography variant="body2">Saldo insuficiente para saque (mínimo de 50 fichas).</Typography>
-            )}
-          </Box>
-        ) : (
-          <Box>
-            <Typography variant="body1">Saque realizado com sucesso!</Typography>
-            <Button variant="contained" onClick={() => setModalStep('addFunds')} sx={{ marginTop: 2 }}>
-              Fechar
-            </Button>
-          </Box>
-        )}
-
-        <Box sx={{ marginTop: 2 }}>
-          <Typography variant="body2">1 ficha = 5 reais</Typography>
-        </Box>
-      </Box>
-    </Modal>
-
+      <StyledBoxCustom>
+        <ModalTitleCustom id="notifications-modal-title" variant="h6" component="h2">
+          {t('Notifications')}
+        </ModalTitleCustom>
+        <div id="notifications-modal-description" style={{ maxHeight: '300px', overflowY: 'auto' }}>
+          {notifications.length > 0 ? (
+            notifications.slice(0, 5).map((notification, index) => (
+              <NotificationWrapper key={index}>
+                <NotificationIconWrapper>
+                  {notification.type === 'TEAM_INVITE' ? (
+                    <GroupAdd color="primary" />
+                  ) : (
+                    <NotificationImportant color="error" />
+                  )}
+                </NotificationIconWrapper>
+                <div style={{ flexGrow: 1 }}>
+                  <NotificationTextCustom variant="body2">{notification.type}</NotificationTextCustom>
+                  {notification.type === 'TEAM_INVITE' && (
+                    <ButtonWrapperCustom>
+                      <StyledButtonCustom
+                        variant="contained"
+                        color="primary"
+                        onClick={() => handleAccept(index)}
+                      >
+                        Aceitar
+                      </StyledButtonCustom>
+                      <StyledButtonCustom
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleReject(index)}
+                      >
+                        Recusar
+                      </StyledButtonCustom>
+                    </ButtonWrapperCustom>
+                  )}
+                </div>
+              </NotificationWrapper>
+            ))
+          ) : (
+            <NotificationTextCustom variant="body2">{t('No notifications...')}</NotificationTextCustom>
+          )}
+        </div>
+      </StyledBoxCustom>
+    </StyledModalCustom>
 
     <Modal
       open={isMPOpen}
@@ -914,16 +945,16 @@ const handleWithdraw = async (values: SaleClientRequestDTO) => {
               <FormikForm>
                 <Box sx={{ marginTop: 2 }}>
                   <Typography variant="body1">
-                    Fichas atuais: {saldo !== null ? `${saldo} Fichas` : 'Carregando...'}
+                    Fichas atuais: {saldoFicha !== null ? `${saldoFicha} Fichas` : 'Carregando...'}
                   </Typography>
 
-                  {saldo && saldo >= 50 ? (
+                  {saldoFicha ? (
                     <>
                       {/* Insígnias Estilo Pokémon */}
                       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, marginTop: 2 }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                           <FaCoins size={24} color="gold" />
-                          <Typography variant="body2">{saldo} Fichas</Typography>
+                          <Typography variant="body2">{saldoFicha} Fichas</Typography>
                         </Box>
                       </Box>
 
@@ -985,48 +1016,7 @@ const handleWithdraw = async (values: SaleClientRequestDTO) => {
       </Box>
     </Modal>
 
-    <Modal 
-  open={isNotificationsOpen}
-  onClose={closeNotificationsModal}
-  aria-labelledby="notifications-modal-title"
-  aria-describedby="notifications-modal-description"
->
-  <StyledBox style={{ width: '300px' }}>
-    <Typography id="notifications-modal-title" variant="h6" component="h2">
-      {t('Notifications')}
-    </Typography>
-    <div id="notifications-modal-description" style={{ maxHeight: '200px', overflowY: 'auto', marginTop: '10px' }}>
-      {notifications.length > 0 ? (
-        notifications.map((notification, index) => (
-          <div key={index} style={{ marginBottom: '15px' }}>
-            <Typography variant="body2">{notification.type}</Typography>
-            {notification.type === 'TEAM_INVITE' && (
-              <div style={{ marginTop: '10px' }}>
-                <Button 
-                  variant="contained" 
-                  color="primary" 
-                  onClick={() => handleAccept(index)}
-                  style={{ marginRight: '10px' }}
-                >
-                  Aceitar
-                </Button>
-                <Button 
-                  variant="outlined" 
-                  color="secondary" 
-                  onClick={() => handleReject(index)}
-                >
-                  Recusar
-                </Button>
-              </div>
-            )}
-          </div>
-        ))
-      ) : (
-        <Typography variant="body2">{t('No notifications...')}</Typography>
-      )}
-    </div>
-  </StyledBox>
-</Modal>
+  
 
 
 <Dialog open={inventoryModalOpen} onClose={closeInventoryModal} fullWidth>
@@ -1043,7 +1033,7 @@ const handleWithdraw = async (values: SaleClientRequestDTO) => {
               <Box sx={{ padding: 2 }}>
                 {/* Seção da Carteira de Fichas */}
                 <h3>Quantidade de Fichas</h3>
-                <p>Você tem {saldo} fichas em sua carteira.</p>
+                <p>Você tem {saldoFicha} fichas em sua carteira.</p>
               </Box>
             )}
             {selectedTab === 1 && (

@@ -5,6 +5,7 @@ import { languageDetector, languageDetectorOptions } from "./lang-detector";
 const resources = {
     en: {
         translation: {
+
             "Last updated: 15th October 2024": "Last updated: 15th October 2024",
 
             "Sign In": "Sign In",
@@ -84,9 +85,11 @@ const resources = {
 
             "7. Contact": "7. Contact",
             "If you have any questions about our Privacy Policy, contact us at the email: integradoifspprojeto@gmail.com":
-                "If you have any questions about our Privacy Policy, contact us at the email: integradoifspprojeto@gmail.com"
-        }
-    },
+                "If you have any questions about our Privacy Policy, contact us at the email: integradoifspprojeto@gmail.com",
+
+               "Login failed. Please check your credentials and try again." :  "Login failed. Please check your credentials and try again."
+    }
+},
     pt: {
         translation: {
             "Last updated: 15th October 2024": "Última atualização: 15 de Outubro de 2024",
@@ -161,7 +164,9 @@ const resources = {
               "A CommonLeague se reserva o direito de modificar esta Política de Privacidade a qualquer momento. As alterações serão publicadas nesta página com a data de revisão atualizada.",
             "7. Contact": "7. Contato",
             "If you have any questions about our Privacy Policy, please contact us via email: integradoifspprojeto@gmail.com":
-              "Se você tiver dúvidas sobre nossa Política de Privacidade, entre em contato conosco pelo e-mail: integradoifspprojeto@gmail.com"
+              "Se você tiver dúvidas sobre nossa Política de Privacidade, entre em contato conosco pelo e-mail: integradoifspprojeto@gmail.com",
+
+                "Login failed. Please check your credentials and try again." :  "Por favor, verifique suas credenciais e tente novamente."
           }
           
     },
@@ -241,7 +246,9 @@ const resources = {
             "If you have any questions about our Privacy Policy, please contact us at the email: integradoifspprojeto@gmail.com":
                 "プライバシーポリシーに関する質問がある場合は、メール（integradoifspprojeto@gmail.com）でお問い合わせください。",
                 "Decline": "辞退",
-  "Accept": "受け入れる"
+  "Accept": "受け入れる",
+
+    "Login failed. Please check your credentials and try again." :  "Error de inicio de sesión. Por favor, verifica tus credenciales y vuelve a intentarlo."
         }
     },
     
@@ -326,7 +333,9 @@ const resources = {
 
             "7. Contato": "7. Contacto",
             "Se você tiver dúvidas sobre nossa Política de Privacidade, entre em contato conosco pelo e-mail: integradoifspprojeto@gmail.com":
-                "Si tienes preguntas sobre nuestra Política de Privacidad, contáctanos por correo electrónico a: integradoifspprojeto@gmail.com"
+                "Si tienes preguntas sobre nuestra Política de Privacidad, contáctanos por correo electrónico a: integradoifspprojeto@gmail.com",
+
+                 "Login failed. Please check your credentials and try again." :  "Error de inicio de sesión. Por favor, verifica tus credenciales y vuelve a intentarlo."
         }
     },
     fr: {
@@ -412,7 +421,9 @@ const resources = {
                 "Si vous avez des questions concernant notre Politique de Confidentialité, contactez-nous par e-mail à : integradoifspprojeto@gmail.com",
 
                 "Decline": "Refuser",
-"Accept": "Accepter"
+"Accept": "Accepter",
+
+   "Login failed. Please check your credentials and try again." :  "Échec de la connexion. Veuillez vérifier vos identifiants et réessayer."
         }
     },
     de: {
@@ -497,7 +508,7 @@ const resources = {
             "7. Contato": "7. Kontakt",
             "Se você tiver dúvidas sobre nossa Política de Privacidade, entre em contato conosco pelo e-mail: integradoifspprojeto@gmail.com":
                 "Wenn Sie Fragen zu unserer Datenschutzrichtlinie haben, kontaktieren Sie uns bitte per E-Mail unter: integradoifspprojeto@gmail.com",
-
+ "Login failed. Please check your credentials and try again." :  " Anmeldung fehlgeschlagen. Bitte überprüfen Sie Ihre Anmeldedaten und versuchen Sie es erneut."
         }
     },
     ru: {
@@ -580,7 +591,9 @@ const resources = {
 
             "7. Contato": "7. Контакт",
             "Se você tiver dúvidas sobre nossa Política de Privacidade, entre em contato conosco pelo e-mail: integradoifspprojeto@gmail.com":
-                "Если у вас есть вопросы по нашей Политике конфиденциальности, свяжитесь с нами по электронной почте: integradoifspprojeto@gmail.com"
+                "Если у вас есть вопросы по нашей Политике конфиденциальности, свяжитесь с нами по электронной почте: integradoifspprojeto@gmail.com",
+
+                 "Login failed. Please check your credentials and try again." :  "Ошибка входа. Пожалуйста, проверьте свои учетные данные и попробуйте снова."
         }
     },
     ko: {
@@ -663,7 +676,9 @@ const resources = {
 
             "7. Contato": "7. 연락처",
             "Se você tiver dúvidas sobre nossa Política de Privacidade, entre em contato conosco pelo e-mail: integradoifspprojeto@gmail.com":
-                "개인정보 보호정책에 대한 질문이 있으시면 이메일로 연락해 주세요: integradoifspprojeto@gmail.com"
+                "개인정보 보호정책에 대한 질문이 있으시면 이메일로 연락해 주세요: integradoifspprojeto@gmail.com",
+
+                   "Login failed. Please check your credentials and try again." :  "로그인 실패. 자격 증명을 확인하고 다시 시도하세요."
         }
     },
     zh: {
@@ -746,7 +761,10 @@ const resources = {
 
             "7. Contact": "7. 联系方式",
             "If you have any questions about our Privacy Policy, contact us at the email: integradoifspprojeto@gmail.com":
-                "如果您对我们的隐私政策有任何疑问，请通过电子邮件与我们联系： integradoifspprojeto@gmail.com"
+                "如果您对我们的隐私政策有任何疑问，请通过电子邮件与我们联系： integradoifspprojeto@gmail.com",
+
+                   "Login failed. Please check your credentials and try again." :  "登录失败。请检查您的凭据并重试。"
+
         }
     }
 };

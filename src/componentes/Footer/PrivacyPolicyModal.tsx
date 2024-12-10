@@ -2,10 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 
-interface PrivacyPolicyModalProps {
+interface TermModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onAccept: () => void;
 }
+
 
 // Estilos do Footer (Rodapé)
 const Footer = styled.footer`
@@ -121,7 +123,7 @@ const Button = styled.button<{ isPrimary: boolean; disabled: boolean }>`
   }
 `;
 
-const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, onClose }) => {
+const PrivacyPolicyModal: React.FC<TermModalProps> = ({isOpen, onClose, onAccept  }) => {
   const [canAccept, setCanAccept] = useState(false); // Controla se o botão de aceitar será liberado
   const contentRef = useRef<HTMLDivElement | null>(null); // Referência para o conteúdo dos termos
   const { t, i18n } = useTranslation();
@@ -139,12 +141,30 @@ const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, onClose
     }
   };
 
+// Salva no localStorage quando o usuário aceitar a política de privacidade
+const handleAcceptPrivacyPolicy = () => {
+  localStorage.setItem('privacyPolicyAccepted', 'true'); // Salva a aceitação da política de privacidade
+  onAccept(); // Chama a função onAccept do componente pai para fechar o modal
+};
+
+
+  // Verifica se a política de privacidade já foi aceita
+useEffect(() => {
+  const privacyPolicyAccepted = localStorage.getItem('privacyPolicyAccepted');
+  if (privacyPolicyAccepted === 'true') {
+   // onClose(); // Fecha o modal automaticamente se já foi aceito
+  }
+}, [onClose]);
+
   // UseEffect para garantir que o scroll inicie no topo quando o modal abrir
   useEffect(() => {
     if (isOpen && contentRef.current) {
+      
       contentRef.current.scrollTop = 0; // Faz o scroll começar do topo
     }
   }, [isOpen]);
+
+  
 
   return (
     <div>
@@ -153,7 +173,7 @@ const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, onClose
         <ModalContainer>
           <ModalHeader>
             <ModalTitle>{t("Privacy Policy")}</ModalTitle>
-            <CloseButton onClick={onClose}>X</CloseButton>
+        
           </ModalHeader>
           <ModalBody ref={contentRef} onScroll={handleScroll}>
             <h2>{t("COMMONLEAGUE PRIVACY POLICY")}</h2>
@@ -184,10 +204,8 @@ const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, onClose
             <p>{t("If you have any questions about our Privacy Policy, please contact us at the email: integradoifspprojeto@gmail.com")}</p>
           </ModalBody>
           <ModalFooter>
-            <Button isPrimary={false} onClick={onClose} disabled={false}>
-              {t("Decline")}
-            </Button>
-            <Button isPrimary={true} onClick={onClose} disabled={!canAccept}>
+          
+          <Button isPrimary={true} onClick={handleAcceptPrivacyPolicy} disabled={!canAccept}>
               {t("Accept")}
             </Button>
           </ModalFooter>

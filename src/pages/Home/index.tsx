@@ -16,7 +16,6 @@ import Card from "../../componentes/GaleryPlayers/Imagens"
 import TermsModal from '../../componentes/Footer/TermModal';
 import PrivacyPolicyModal from '../../componentes/Footer/PrivacyPolicyModal';
 
-
 const Backgroundgradient = styled.main`
   background: linear-gradient(174.61deg, #141d26 4.16%, #1a2633 48%, #151515 96.76%);
   width: 100%;
@@ -40,9 +39,9 @@ const App: React.FC = () => {
   const [active, setActive] = useState(false);
   const [games, setGames] = useState<Game[]>([]);
 
-    // Estado para controlar a abertura dos modais
-    const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
-    const [isPrivacyPolicyModalOpen, setIsPrivacyPolicyModalOpen] = useState(false);
+  // Estado para controlar a abertura dos modais
+  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+  const [isPrivacyPolicyModalOpen, setIsPrivacyPolicyModalOpen] = useState(false);
 
   const handleTogleActive = () => {
     setActive(!active);
@@ -61,14 +60,35 @@ const App: React.FC = () => {
     fetchData();
   }, []);
 
+  // Funções para abrir e fechar os modais
+  const openTermsModal = () => setIsTermsModalOpen(true);
+  const closeTermsModal = () => setIsTermsModalOpen(false);
 
-    // Funções para abrir e fechar os modais
-    const openTermsModal = () => setIsTermsModalOpen(true);
-    const closeTermsModal = () => setIsTermsModalOpen(false);
-  
-    const openPrivacyPolicyModal = () => setIsPrivacyPolicyModalOpen(true);
-    const closePrivacyPolicyModal = () => setIsPrivacyPolicyModalOpen(false);
+  const openPrivacyPolicyModal = () => setIsPrivacyPolicyModalOpen(true);
+  const closePrivacyPolicyModal = () => setIsPrivacyPolicyModalOpen(false);
 
+  useEffect(() => {
+    // Verificar se os termos e a política de privacidade foram aceitos
+    const termsAccepted = localStorage.getItem('termsAccepted');
+    const privacyPolicyAccepted = localStorage.getItem('privacyPolicyAccepted');
+
+    // Se algum dos dois não foi aceito, abrir os modais
+    if (!termsAccepted || !privacyPolicyAccepted) {
+      openTermsModal();  // Abre o modal de termos
+      openPrivacyPolicyModal(); // Abre o modal de política de privacidade
+    }
+  }, []);
+
+  // Função para aceitar os termos e política de privacidade
+  const handleAcceptTerms = () => {
+    localStorage.setItem('termsAccepted', 'true');
+    closeTermsModal();
+  };
+
+  const handleAcceptPrivacyPolicy = () => {
+    localStorage.setItem('privacyPolicyAccepted', 'true');
+    closePrivacyPolicyModal();
+  };
 
   return (
     <Components.Main>
@@ -78,15 +98,23 @@ const App: React.FC = () => {
         <Components.Banner className={`banner ${active ? 'active' : ''}`}>
           <Header toggleActive={handleTogleActive} />
           <Home games={games} />
-          <Card/>
+          <Card />
           <Footer 
             openTermsModal={openTermsModal} 
             openPrivacyPolicyModal={openPrivacyPolicyModal} 
           />
           
           {/* Exibindo os modais */}
-          <TermsModal isOpen={isTermsModalOpen} onClose={closeTermsModal} />
-          <PrivacyPolicyModal isOpen={isPrivacyPolicyModalOpen} onClose={closePrivacyPolicyModal} />
+          <TermsModal 
+            isOpen={isTermsModalOpen} 
+            onClose={closeTermsModal} 
+            onAccept={handleAcceptTerms}  // Passa a função para aceitar os termos
+          />
+          <PrivacyPolicyModal 
+            isOpen={isPrivacyPolicyModalOpen} 
+            onClose={closePrivacyPolicyModal} 
+            onAccept={handleAcceptPrivacyPolicy}  // Passa a função para aceitar a política
+          />
         </Components.Banner>
       </Backgroundgradient>
     </Components.Main>

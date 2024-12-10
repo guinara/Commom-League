@@ -9,12 +9,12 @@ import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../security/AuthContext'; 
 import { changeLanguage } from 'i18next';
-import UserService from "../../service/authService";
+import UserService from "../../service/AuthService";
 import { Logout } from '@mui/icons-material';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import MaskedInput from 'react-text-mask';
-
+import Termos from "../../componentes/Footer/TermModal";
 
 
 const userService = new UserService();
@@ -29,6 +29,11 @@ interface FormValues {
   password: string; 
   profile: string;
   confirmPassword: string;
+}
+
+interface FooterProps {
+  openPrivacyPolicyModal: () => void;
+  openTermsModal: () => void;
 }
 
 interface FormValuesLogin {
@@ -105,7 +110,9 @@ const ErrorMessageStyled = styled.div`
 }
 `;
 
-const App: React.FC = () => {
+
+
+const App: React.FC<FooterProps> = ({ openPrivacyPolicyModal, openTermsModal }) => {
   const { t, i18n } = useTranslation();
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng)
@@ -119,7 +126,18 @@ const App: React.FC = () => {
     '/imagens/galeria/6.mp4'
   ];
 
+  // Função chamada quando a checkbox for alterada
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      openPrivacyPolicyModal();  // Abre o modal quando a checkbox for marcada
+    }
+  };
 
+  useEffect(() => {
+    // Limpar os tokens do sessionStorage e localStorage
+    sessionStorage.removeItem('token');
+    localStorage.removeItem('token');
+  }, [navigate]);
 
 
   // Função para formatar o CPF
@@ -170,8 +188,7 @@ const formatCPF = (cpf: string) => {
       login(response.token);
       navigate('/');
     } catch (error) {
-      console.error('Error during login:', error);
-      console.log(values)
+      toast.error(t('Login failed. Please check your credentials and try again.'));
     }
   };
 
@@ -318,20 +335,7 @@ const formatCPF = (cpf: string) => {
 
 
                <ErrorMessageStyled>{errors.confirmPassword && touched.confirmPassword && errors.confirmPassword}</ErrorMessageStyled>
-                <CheckboxContainer>
-                    <Label htmlFor="accept-terms-1">
-                        <Checkbox type="checkbox" id="accept-terms-1" required />
-                        Eu li e aceito os 
-                        <Link href="../../../public/docs/Termos_e_condições.pdf" target="_blank"> Termos de Serviço </Link>
-                    </Label>
-                </CheckboxContainer>
-                <CheckboxContainer>
-                    <Label htmlFor="accept-terms-2">
-                        <Checkbox type="checkbox" id="accept-terms-2" required />
-                        Eu li e aceito as 
-                        <Link href="../../../public/docs/Politica_de_privacidade.pdf" target="_blank"> Políticas de Segurança </Link>
-                    </Label>
-                </CheckboxContainer>
+
              
               <Components.Button type="submit">{t("Sign Up")}</Components.Button>
             </Components.Form>
@@ -372,7 +376,6 @@ const formatCPF = (cpf: string) => {
                 autoComplete="nope"
               />
               <ErrorMessageStyled>{errors.password && touched.password && errors.password}</ErrorMessageStyled>
-              <Components.Anchor href="#">{t('Forgot Your Password?')}</Components.Anchor>
               <Components.Button type="submit">{t('Sign In')}</Components.Button>
             </Components.Form>
           </Components.SignInContainer>

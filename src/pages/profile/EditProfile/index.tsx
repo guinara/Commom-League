@@ -5,7 +5,7 @@ import SideMenu from '../../../componentes/mainSideBar/SideMenu';
 import Header from '../../../componentes/MainHeader';
 import * as Components from './component';
 import { Formik, FormikHelpers, useFormik } from "formik";
-import AuthService, { User } from "../../../service/authService";
+import AuthService, { User } from "../../../service/AuthService";
 import http from '../../../http';
 import axios from 'axios';
 import lolAccountService from "../../../service/lolAccountService";

@@ -10,7 +10,7 @@ import DamageBar from './DamageBar';
 import TankBar from './tankBar';
 import { useNavigate } from 'react-router-dom';
 import Historic from '../../../componentes/Historic';
-import AuthService, { User } from "../../../service/authService";
+import AuthService, { User } from "../../../service/AuthService";
 import http from '../../../http';
 
 const Backgroundgradient = styled.main`
