@@ -1,0 +1,92 @@
+{
+    "tournamentId": "987654321",
+    "tournamentName": "League of Legends World Championship",
+    "location": "Seoul, South Korea",
+    "startDate": "2024-10-01",
+    "endDate": "2024-11-15",
+    "teams": [
+      {
+        "teamId": "1",
+        "teamName": "Team Alpha",
+        "region": "NA",
+        "players": [
+          {
+            "playerId": "1001",
+            "playerName": "PlayerOne",
+            "role": "Top",
+            "accountRiot": {
+              "gameName": "AlphaTop",
+              "tagLine": "NA1",
+              "summonerLevel": 200,
+              "profileIconId": 101
+            }
+          },
+          {
+            "playerId": "1002",
+            "playerName": "PlayerTwo",
+            "role": "Jungle",
+            "accountRiot": {
+              "gameName": "AlphaJungle",
+              "tagLine": "NA1",
+              "summonerLevel": 250,
+              "profileIconId": 102
+            }
+          }
+        ],
+        "coach": {
+          "coachId": "2001",
+          "coachName": "Coach Alpha",
+          "experienceYears": 5
+        }
+      },
+      {
+        "teamId": "2",
+        "teamName": "Team Beta",
+        "region": "EU",
+        "players": [
+          {
+            "playerId": "2001",
+            "playerName": "PlayerThree",
+            "role": "Mid",
+            "accountRiot": {
+              "gameName": "BetaMid",
+              "tagLine": "EUW1",
+              "summonerLevel": 300,
+              "profileIconId": 201
+            }
+          },
+          {
+            "playerId": "2002",
+            "playerName": "PlayerFour",
+            "role": "ADC",
+            "accountRiot": {
+              "gameName": "BetaADC",
+              "tagLine": "EUW1",
+              "summonerLevel": 280,
+              "profileIconId": 202
+            }
+          }
+        ],
+        "coach": {
+          "coachId": "2002",
+          "coachName": "Coach Beta",
+          "experienceYears": 6
+        }
+      }
+    ],
+    "prizePool": 5000000,
+    "matches": [
+      {
+        "matchId": "match001",
+        "teamA": "Team Alpha",
+        "teamB": "Team Beta",
+        "matchDate": "2024-10-15",
+        "winner": "Team Alpha",
+        "score": {
+          "teamA": 3,
+          "teamB": 1
+        }
+      }
+    ]
+  }
+  
