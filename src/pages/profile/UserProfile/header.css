@@ -1,0 +1,45 @@
+
+
+.user2 span{
+    top: 30%;
+    position: absolute;
+    padding-left: 33%; 
+    color: black;
+    font-size: 1rem;
+}
+
+.verificado{
+    top: 80%;
+    position: absolute;
+    padding-left: 14%; 
+ 
+}
+.verificado button{
+   background-color: blue;
+   color: white;
+   font-size: 1rem;
+}
+
+.edit{
+    top: 5%;
+    position: absolute;
+    left: 90%; 
+    
+}
+
+.edit button{
+   background-color: rgb(5, 5, 5);
+   opacity: 75%;
+   color: #ffffff;
+   font-size: 150%;
+   cursor: pointer;
+}
+
+.level{
+    top: 20%;
+    position: absolute;
+    left: 90%; 
+    font-size: 200%;
+}
+
+
