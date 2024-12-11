@@ -635,7 +635,7 @@ const fotosFiltradas = data.filter((item) => {
                 {fotosOrdenadas.map((item) => (
                     <Card key={item.id}>
                         <Image
-                            src={`../../../../public/imagens/galeria/foto-5.png`}
+                            src={`https://raw.githubusercontent.com/guinara/Commom-League/refs/heads/main/public/imagens/galeria/foto-1.png`}
                             alt=""
                             onClick={() => toggleModal(item)} // Passa o item para o modal
                         />
