@@ -220,6 +220,8 @@ const TournamentInfo: React.FC = () => {
 
   return (
     <Components.Main>
+      
+       <EstilosGlobais />
       <Backgroundgradient>
         <SideMenu active={active} />
         <Components.Banner className={`banner ${active ? 'active' : ''}`}>

@@ -45,9 +45,6 @@ const App: React.FC = () => {
     setActive(!active);
   };
 
-
-
- 
   const openTermsModal = () => setIsTermsModalOpen(true);
   const closeTermsModal = () => setIsTermsModalOpen(false);
 

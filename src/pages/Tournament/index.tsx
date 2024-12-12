@@ -11,6 +11,7 @@ import { toast } from 'react-toastify'; // Importe o toast
 import { ToastContainer } from 'react-toastify';
 import EstilosGlobais from '../../componentes/GlobaStyle';
 import { useTranslation } from 'react-i18next';
+
 // Estilos
 const Backgroundgradient = styled.main`
   background: linear-gradient(174.61deg, #141d26 4.16%, #1a2633 48%, #151515 96.76%);
@@ -84,7 +85,7 @@ const TournamentInfo: React.FC = () => {
   const teamService = new TeamService();
   const [data, setData] = useState<ChampionshipItem[]>([]);
   const [players, setPlayers] = useState<any[]>([]); // ou useState<Jogador[]>([]) se você tiver uma interface para o jogador
-
+const { t, i18n } = useTranslation();
  
   useEffect(() => {
     const fetchMatchData = async () => {
@@ -92,9 +93,9 @@ const TournamentInfo: React.FC = () => {
       setError(null);
   
       try {
-        console.log('Iniciando requisição para buscar dados do campeonato...');
+      //  console.log('Iniciando requisição para buscar dados do campeonato...');
         const response = await championshipService.consult();
-        console.log('Dados do Torneio:', response.data); // Log dos dados do campeonato
+       // console.log('Dados do Torneio:', response.data); // Log dos dados do campeonato
         setData(response.data); // Atualiza o estado com os dados dos campeonatos
   
         // Verifica se existe um "winner" na resposta e faz a requisição dos jogadores
@@ -103,33 +104,33 @@ const TournamentInfo: React.FC = () => {
   
           // Verifica se winner é um array ou um objeto
           if (Array.isArray(winner) && winner.length > 0) {
-            console.log('Vencedores encontrados:', winner[0]); // Log do primeiro vencedor, se for um array
+          //  console.log('Vencedores encontrados:', winner[0]); // Log do primeiro vencedor, se for um array
             await fetchPlayers(winner[0].id);  // Buscar jogadores do time vencedor
           } else if (winner && typeof winner === 'object') {
-            console.log('Vencedor encontrado:', winner); // Log do vencedor, se for um objeto
+        //    console.log('Vencedor encontrado:', winner); // Log do vencedor, se for um objeto
             await fetchPlayers(winner.id);  // Buscar jogadores do time vencedor
           } else {
-            console.log('Não há vencedor(s) definido(s) para este torneio.');
+          //  console.log('Não há vencedor(s) definido(s) para este torneio.');
           }
         }
       } catch (err) {
-        setError('Erro ao buscar os dados do campeonato');
-        console.error('Erro ao buscar dados do campeonato:', err); // Log do erro
+      //  setError('Erro ao buscar os dados do campeonato');
+       // console.error('Erro ao buscar dados do campeonato:', err); // Log do erro
       } finally {
         setIsLoading(false);
-        console.log('Requisição finalizada');
+      //  console.log('Requisição finalizada');
       }
     };
   
     // Função para buscar jogadores do time vencedor
     const fetchPlayers = async (teamId: string) => {
       try {
-        console.log(`Buscando jogadores para o time com ID: ${teamId}`);
+    //    console.log(`Buscando jogadores para o time com ID: ${teamId}`);
         const playersData = await teamService.players(teamId);
-        console.log('Jogadores do time:', playersData.data); // Log dos jogadores
+      //  console.log('Jogadores do time:', playersData.data); // Log dos jogadores
         setPlayers(playersData.data);  // Atualiza o estado com os jogadores
       } catch (err) {
-        console.error('Erro ao buscar jogadores do time:', err);
+       // console.error('Erro ao buscar jogadores do time:', err);
       }
     };
   
@@ -141,25 +142,25 @@ const TournamentInfo: React.FC = () => {
 
   const handleReady = async () => {
     try {
-      console.log('Registrando no torneio com', chips, 'chips');
+     
       await championshipService.joinTournament(chips); // Chama o método para registrar no torneio
       setIsInTournament(true); // Após confirmar, o usuário entra no torneio
       setIsModalOpen(false); // Fecha o modal
-      toast.success('Registro realizado com sucesso no torneio!'); // Exibe mensagem de sucesso
+      toast.success(t('Registration successful in the tournament!')); // Exibe mensagem de sucesso
     } catch (error) {
-      console.error('Erro ao se registrar no torneio', error);
+     // console.error('Erro ao se registrar no torneio', error);
       
       // Verifica se o erro é um 403 e exibe a mensagem apropriada
       if (error.response?.status === 403) {
-        toast.error('Você não é o capitão do seu time e não pode se registrar.');
+        toast.error(t('You are not the captain of your team and cannot register.'));
       } else {
-        toast.error(`Erro ao se registrar no torneio: ${error.message || 'Desconhecido'}`);
+        toast.error(t('Error registering for the tournament'));
       }
     }
   };
 
   const handleChipsChange = (value: number) => {
-    console.log('Alterando a quantidade de chips para:', value);
+   // console.log('Alterando a quantidade de chips para:', value);
     setChips(value); // Atualiza a quantidade de chips
   };
 
@@ -183,11 +184,11 @@ const TournamentInfo: React.FC = () => {
           <Header toggleActive={() => setActive(!active)} />
           <ToastContainer />
           <DataContainer>
-            <Title>Histórico de Torneios</Title>
+          <Title>{t('Tournament History')}</Title>
 
             {isLoading ? (
               <Typography variant="h6" style={{ color: '#fff' }}>
-                Carregando torneios...
+                {t('Loading tournaments...')}
               </Typography>
             ) : error ? (
               <Typography variant="h6" style={{ color: '#fff' }}>
@@ -197,7 +198,7 @@ const TournamentInfo: React.FC = () => {
               <>
                 {data.length === 0 ? (
                   <Typography variant="h6" style={{ color: '#fff' }}>
-                    Você não participou de nenhum torneio ainda.
+                    {t('You have not participated in any tournaments yet.')}
                   </Typography>
                 ) : (
                   <Container>
@@ -205,12 +206,13 @@ const TournamentInfo: React.FC = () => {
                       <TournamentCard key={tournament.id} bgImage={tournament.imagePath}>
                         <Image src={`../../../../public/imagens/galeria/foto-7.png`} alt="" />
                         <StatusOverlay status={tournament.type === 'FINISHED' ? 'FINISHED' : 'ONGOING'}>
-                          {tournament.status === 'FINISHED' ? 'FINALIZADO' : 'EM ANDAMENTO'}
+                        {t(tournament.status === 'FINISHED' ? 'FINISHED' : 'ONGOING')}
                         </StatusOverlay>
                         <InfoContainer>
                           <InfoColumn>
                             <Info><strong>{tournament.id}</strong></Info>
-                            <Value>Chips por Player: {tournament.qntChipsPerPlayer}</Value>
+                           
+<Value>{t('Chips per Player')}: {tournament.qntChipsPerPlayer}</Value>
                           </InfoColumn>
                           <BadgeFichaContainer>
                             <ConfirmationNumberIcon />
@@ -219,7 +221,7 @@ const TournamentInfo: React.FC = () => {
                         </InfoContainer>
                         {/* Botão para ver detalhes */}
                         <ButtonStyled onClick={() => handleViewTournamentDetails(tournament)}>
-                          Ver Detalhes
+                        <Button>{t('View Details')}</Button>
                         </ButtonStyled>
                       </TournamentCard>
                     ))}
@@ -229,14 +231,27 @@ const TournamentInfo: React.FC = () => {
             )}
 
         
-              <ButtonStyled
-                variant="contained"
-                color="primary"
-                fullWidth
-                onClick={handleJoinTournament}
-              >
-                Buscar um Torneio
-              </ButtonStyled>
+<Button
+      variant="contained"
+      color="primary"
+      fullWidth
+      onClick={handleJoinTournament}
+      style={{
+        backgroundColor: '#3f51b5',  // Cor de fundo
+        color: 'white',  // Cor do texto
+        fontWeight: 'bold',  // Peso da fonte
+        fontSize: '1rem',  // Tamanho da fonte
+        padding: '12px 24px',  // Espaçamento interno
+        borderRadius: '8px',  // Bordas arredondadas
+        textAlign: 'center',  // Centraliza o texto
+        transition: 'background-color 0.3s ease',  // Efeito de transição
+      }}
+      onMouseEnter={(e) => e.target.style.backgroundColor = '#303f9f'}  // Efeito ao passar o mouse
+      onMouseLeave={(e) => e.target.style.backgroundColor = '#3f51b5'}  // Efeito ao tirar o mouse
+    >
+      {t('Search for a Tournament')}
+    </Button>
+
             
           </DataContainer>
         </Components.Banner>
@@ -258,7 +273,7 @@ const TournamentInfo: React.FC = () => {
           }}
         >
           <Typography variant="h6" style={{ color: '#000000' }}>
-            Escolha a Quantidade de Chips
+          <Typography>{t('Choose the number of chips')}</Typography>
           </Typography>
 
           <Grid container spacing={2} style={{ marginTop: '20px' }}>
@@ -270,7 +285,7 @@ const TournamentInfo: React.FC = () => {
                   fullWidth
                   onClick={() => handleChipsChange(value)}
                 >
-                  {value} Chips
+                  {value} {t('Chips')}
                 </Button>
               </Grid>
             ))}
@@ -278,7 +293,7 @@ const TournamentInfo: React.FC = () => {
 
           <div style={{ marginTop: '10px' }}>
             <Typography variant="body1" style={{ color: '#070707' }}>
-              Ou digite sua quantidade de Chips:
+            {t('Or enter your chip amount:')}
             </Typography>
             <input
               type="number"
@@ -301,7 +316,7 @@ const TournamentInfo: React.FC = () => {
             onClick={handleReady}
             style={{ marginTop: '20px' }}
           >
-            Confirmar Participação
+           {t('Confirm')}
           </ButtonStyled>
         </Box>
       </Modal>
@@ -375,23 +390,24 @@ const TournamentInfo: React.FC = () => {
             }}
           >
             <Typography variant="h3" style={{ fontWeight: 'bold' }}>
-              {`Winner: ${selectedTournament.winner?.name}`}
+            {t("Winner")}: {selectedTournament.winner?.name}
+
             </Typography>
           </Box>
         </Box>
 
         {/* Detalhes do Torneio */}
         <Typography variant="body1" style={{ color: '#000000' }}>
-          <strong>Status:</strong> {selectedTournament.status}
+          <strong>{t("Status")}:</strong> {selectedTournament.status}
         </Typography>
         <Typography variant="body1" style={{ color: '#000000' }}>
-          <strong>Chips por jogador:</strong> {selectedTournament.qntChipsPerPlayer}
+          <strong>{t("Chips Per Player")}:</strong> {selectedTournament.qntChipsPerPlayer}
         </Typography>
 
 
         {/* Exibindo os jogadores vencedores */}
         <div style={{ marginTop: '15px' }}>
-          <strong>Jogadores Vencedores:</strong>
+          <strong>{t("Jogadores Vencedores")}:</strong>
           {Array.isArray(players) && players.length > 0 ? (
             players.map((player) => (
               <Typography
@@ -463,15 +479,8 @@ const TournamentCard = styled.div`
   }
 `;
 
-
-
-
-
-
-
-
 const ButtonStyled = styled(Button)`
-  background-color: #007bff;
+  background-color: #092f58;
   color: white;
   border: none;
   border-radius: 4px;
@@ -483,6 +492,13 @@ const ButtonStyled = styled(Button)`
     background-color: #0056b3;
   }
 `;
+
+
+
+
+
+
+
 
 
 

@@ -219,7 +219,14 @@ const resources = {
             "Type": "Type",
            
 
-
+            "Round:": "Round:",
+            "Active Teams - Playing:": "Active Teams - Playing:",
+            "Eliminated Teams Lose": "Eliminated Teams Lose",
+            "Left Tournament": "Left Tournament",
+            "No Data Available": "No Data Available",
+            "Lose": "Lose",
+            "Playing": "Playing",
+            "Status: Ongoing": "Status: Ongoing"
       
 
 
@@ -447,8 +454,16 @@ const resources = {
   "You have not participated in any tournaments yet.": "Você não participou de nenhum torneio ainda.",
   "Participated in the Tournament": "Participou do Torneio",
   "Lost the Tournament": "Perdeu o Torneio",
-  "Chips per Player": "Fichas por Jogador"
+  "Chips per Player": "Fichas por Jogador",
 
+  "Round:": "Rodada:",
+  "Active Teams - Playing:": "Times Ativos - Jogando:",
+  "Eliminated Teams Lose": "Times Eliminados Perdem",
+  "Left Tournament": "Saiu do Torneio",
+  "No Data Available": "Nenhum dado disponível",
+  "Lose": "Perder",
+  "Playing": "Jogando",
+  "Status: Ongoing": "Status: Em andamento"
 
 
         }
@@ -688,7 +703,8 @@ const resources = {
 'No Data Available': 'データが利用できません',
 "Lose": "負ける",
 "Playing": "プレイ中",
-'Status: Ongoing': 'ステータス：進行中'
+'Status: Ongoing': 'ステータス：進行中',
+
   
            
         }
@@ -904,7 +920,17 @@ const resources = {
   "Chip Wallet": "Billetera de fichas",
 
   "Type": "Tipo",
- 
+
+
+   "Round:": "Ronda:",
+  "Active Teams - Playing:": "Equipos Activos - Jugando:",
+  "Eliminated Teams Lose": "Equipos Eliminados Pierden",
+  "Left Tournament": "Salió del Torneo",
+  "No Data Available": "No hay datos disponibles",
+  "Lose": "Perder",
+  "Playing": "Jugando",
+  "Status: Ongoing": "Estado: En curso",
+
 
         }
     },
@@ -1136,6 +1162,16 @@ const resources = {
             "Lost the Tournament": "Lost the Tournament",
             "Chips per Player": "Chips per Player",
 
+
+            "Round:": "Manche :",
+  "Active Teams - Playing:": "Équipes Actives - En Jeu :",
+  "Eliminated Teams Lose": "Équipes Éliminées Perdent",
+  "Left Tournament": "A Quitté le Tournoi",
+  "No Data Available": "Aucune donnée disponible",
+  "Lose": "Perdre",
+  "Playing": "En Jeu",
+  "Status: Ongoing": "Statut : En cours"
+
             
 
           
@@ -1366,7 +1402,15 @@ const resources = {
             "You have not participated in any tournaments yet.": "Sie haben noch an keinem Turnier teilgenommen.",
             "Participated in the Tournament": "Am Turnier teilgenommen",
             "Lost the Tournament": "Das Turnier verloren",
-            "Chips per Player": "Chips pro Spieler" 
+            "Chips per Player": "Chips pro Spieler" ,
+            "Round:": "Runde:",
+            "Active Teams - Playing:": "Aktive Teams - Spielen:",
+            "Eliminated Teams Lose": "Ausgeschiedene Teams Verlieren",
+            "Left Tournament": "Turnier Verlassen",
+            "No Data Available": "Keine Daten Verfügbar",
+            "Lose": "Verlieren",
+            "Playing": "Spielen",
+            "Status: Ongoing": "Status: Laufend"
          
 
 
@@ -1563,9 +1607,16 @@ const resources = {
             "You have not participated in any tournaments yet.": "Вы еще не участвовали в турнирах.",
             "Participated in the Tournament": "Принял участие в турнире",
             "Lost the Tournament": "Проиграл в турнире",
-            "Chips per Player": "Чипы на игрока"
+            "Chips per Player": "Чипы на игрока",
 
-
+            "Round:": "Раунд:",
+            "Active Teams - Playing:": "Активные команды - Играют:",
+            "Eliminated Teams Lose": "Выбывшие команды проигрывают",
+            "Left Tournament": "Покинули турнир",
+            "No Data Available": "Данные отсутствуют",
+            "Lose": "Проиграть",
+            "Playing": "Играет",
+            "Status: Ongoing": "Статус: В процессе"
 
 
 
@@ -1791,7 +1842,15 @@ const resources = {
   "You have not participated in any tournaments yet.": "아직 토너먼트에 참여하지 않았습니다.",
   "Participated in the Tournament": "토너먼트에 참가했습니다",
   "Lost the Tournament": "토너먼트에서 졌습니다",
-  "Chips per Player": "플레이어당 칩 수"
+  "Chips per Player": "플레이어당 칩 수",
+  "Round:": "라운드:",
+  "Active Teams - Playing:": "활동 중인 팀 - 경기 중:",
+  "Eliminated Teams Lose": "탈락한 팀은 패배합니다",
+  "Left Tournament": "토너먼트를 떠났습니다",
+  "No Data Available": "사용 가능한 데이터 없음",
+  "Lose": "패배",
+  "Playing": "경기 중",
+  "Status: Ongoing": "상태: 진행 중"
 
 
 
@@ -2048,6 +2107,14 @@ const resources = {
 'Winner': '勝者',
 'status': 'ステータス',
 'Chips Quantity': 'チップの数量',
+"Round:": "回合：",
+"Active Teams - Playing:": "活跃队伍 - 比赛中：",
+"Eliminated Teams Lose": "被淘汰的队伍失利",
+"Left Tournament": "已退出比赛",
+"No Data Available": "无可用数据",
+"Lose": "失败",
+"Playing": "比赛中",
+"Status: Ongoing": "状态：进行中"
 
 
 

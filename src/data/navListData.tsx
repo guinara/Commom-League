@@ -43,6 +43,15 @@ const navListData: NavItem[] = [
         active: false,
         url: 'profiles/edit',
     },
+
+    {
+        id: 5,
+        target: 'Logout',
+        name: 'Logout',
+        icon: 'bi bi-box-arrow-right',
+        active: false,
+        url: 'login',
+    },
 ];
 
 export default navListData;
