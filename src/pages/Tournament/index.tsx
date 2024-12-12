@@ -347,7 +347,7 @@ const { t, i18n } = useTranslation();
         {/* Imagem do Torneio */}
         <Box sx={{ position: 'relative', width: '100%', height: '300px' }}>
           <img
-            src={`../../../../public/imagens/galeria/foto-7.png`}
+            src={`https://raw.githubusercontent.com/guinara/Commom-League/refs/heads/main/public/imagens/galeria/foto-3.png`}
             alt="Torneio"
             style={{
               width: '100%',
