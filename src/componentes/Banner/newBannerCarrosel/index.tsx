@@ -85,7 +85,7 @@ function GameSwiper() {
         </SwiperSlide>
         <SwiperSlide key={3}>
           <div className="gameSlider">
-            <Imagen src="../../../../public/imagens/populares/commo.png" alt="Imagem Carrossel 3" />
+            <Imagen src="https://github.com/guinara/Commom-League/blob/main/public/imagens/populares/commo.png?raw=true" />
           </div>
         </SwiperSlide>
         {/* Adicione mais slides conforme necessário */}
